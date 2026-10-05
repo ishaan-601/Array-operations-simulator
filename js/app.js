@@ -74,19 +74,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const elPresetSelect = document.getElementById('preset-select');
   const elThemeToggle = document.getElementById('theme-toggle');
 
-  // Initialize Memory Visualizer
-  const visualizer = new MemoryVisualizer('grid-visualizer-container', 'memory-strip-container', (r, c) => {
-    if (state.dimension === '1D') {
-      state.targetIndex = r;
-      elTargetRow.value = r;
-    } else {
-      state.targetRow = r;
-      state.targetCol = c;
-      elTargetRow.value = r;
-      elTargetCol.value = c;
+  // Initialize Memory Visualizer with Logical Grid, Memory Strip, and Hardware RAM Layout Containers
+  const visualizer = new MemoryVisualizer(
+    'grid-visualizer-container', 
+    'memory-strip-container', 
+    'ram-layout-container',
+    (r, c) => {
+      if (state.dimension === '1D') {
+        state.targetIndex = r;
+        elTargetRow.value = r;
+      } else {
+        state.targetRow = r;
+        state.targetCol = c;
+        elTargetRow.value = r;
+        elTargetCol.value = c;
+      }
+      recalculateAll();
     }
-    recalculateAll();
-  });
+  );
 
   // Generate initial sample data
   visualizer.generateSampleData(state);
@@ -196,21 +201,21 @@ document.addEventListener('DOMContentLoaded', () => {
       elStepsContainer.innerHTML = '';
       calcResult.steps.forEach(step => {
         const stepCard = document.createElement('div');
-        stepCard.className = 'p-3.5 rounded-lg border border-slate-700/60 bg-slate-800/40 dark:bg-slate-800/60 flex flex-col gap-1 transition-all hover:border-slate-500';
+        stepCard.className = 'p-3 rounded-xl border border-cyan-500/20 bg-slate-900/60 flex flex-col gap-1 transition-all hover:border-cyan-500/50';
         stepCard.innerHTML = `
-          <div class="text-xs font-bold text-blue-400 font-mono">${step.title}</div>
-          <div class="text-sm font-mono text-slate-200 leading-relaxed">${step.description}</div>
+          <div class="text-xs font-bold text-cyan-400 font-mono">${step.title}</div>
+          <div class="text-xs font-mono text-slate-200 leading-relaxed">${step.description}</div>
         `;
         elStepsContainer.appendChild(stepCard);
       });
     }
 
-    // 4. Update Memory Visualizer & Grid
+    // 4. Update Memory Visualizers (Logical Grid, Memory Strip, RAM Layout)
     visualizer.renderLogicalGrid(state, activeHighlights);
   }
 
   /**
-   * Run Operation Algorithm (Linear Search, Binary Search, Insertion, Deletion)
+   * Run Operation Algorithm
    */
   function runOperation() {
     pauseAnimation();
@@ -220,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tab = state.activeTab;
     if (tab === 'calc') {
       recalculateAll();
-      renderOperationLogs(['Calculation mode active. Change inputs or click any grid cell to derive memory address.']);
+      renderOperationLogs(['Address calculation active. Click any cell or change parameters to recalculate.']);
       return;
     }
 
@@ -230,14 +235,12 @@ document.addEventListener('DOMContentLoaded', () => {
       state.animation.stepsData = opResult.steps;
     } else if (tab === 'binary') {
       if (state.dimension !== '1D') {
-        renderOperationLogs(['⚠️ Binary Search is demonstrated on a 1D sorted array. Switch to 1D mode for optimal binary search simulation.']);
-        // Auto switch to 1D for binary search clarity
+        renderOperationLogs(['⚠️ Binary Search is demonstrated on a 1D sorted array. Auto-switching to 1D mode.']);
         state.dimension = '1D';
         elDimension.value = '1D';
         readStateFromInputs();
         visualizer.generateSampleData(state);
       }
-      // Ensure data is sorted for binary search
       visualizer.arrayData.sort((a, b) => Number(a.value) - Number(b.value));
       opResult = ArrayOperations.runBinarySearch(visualizer.arrayData, state.searchValue, state);
       state.animation.stepsData = opResult.steps;
@@ -290,11 +293,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     recalculateAll(highlights);
 
-    // Update log display up to current step
     const logsToDisplay = state.animation.stepsData.slice(0, stepIdx + 1).map(s => s.log);
     renderOperationLogs(logsToDisplay);
 
-    // Update step indicator
     if (elStepIndicator) {
       elStepIndicator.innerText = `Step ${stepIdx + 1} of ${state.animation.totalSteps}`;
     }
@@ -337,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
     elOperationLogs.innerHTML = '';
     logsArray.forEach(msg => {
       const logEntry = document.createElement('div');
-      logEntry.className = 'text-xs font-mono py-1 px-2.5 rounded bg-slate-950/40 text-slate-300 border-l-2 border-blue-500 mb-1';
+      logEntry.className = 'text-xs font-mono py-1 px-2.5 rounded bg-slate-950/80 text-cyan-300 border-l-2 border-cyan-400 mb-1';
       logEntry.innerText = msg;
       elOperationLogs.appendChild(logEntry);
     });
@@ -361,15 +362,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const tabButtons = document.querySelectorAll('.op-tab-btn');
   tabButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      tabButtons.forEach(b => b.classList.remove('bg-blue-600', 'text-white', 'shadow-md'));
-      tabButtons.forEach(b => b.classList.add('bg-slate-800', 'text-slate-400', 'hover:text-slate-200'));
+      tabButtons.forEach(b => b.classList.remove('bg-cyan-500', 'text-slate-950', 'font-bold', 'shadow-lg', 'shadow-cyan-500/30'));
+      tabButtons.forEach(b => b.classList.add('bg-slate-900', 'text-slate-400', 'hover:text-slate-200'));
 
-      btn.classList.remove('bg-slate-800', 'text-slate-400', 'hover:text-slate-200');
-      btn.classList.add('bg-blue-600', 'text-white', 'shadow-md');
+      btn.classList.remove('bg-slate-900', 'text-slate-400', 'hover:text-slate-200');
+      btn.classList.add('bg-cyan-500', 'text-slate-950', 'font-bold', 'shadow-lg', 'shadow-cyan-500/30');
 
       state.activeTab = btn.dataset.tab;
       
-      // Toggle Operation Input Fields visibility
       if (state.activeTab === 'linear' || state.activeTab === 'binary') {
         elOpValueWrapper.classList.remove('hidden');
         document.getElementById('op-value-label').innerText = 'Search Target Value';
@@ -450,11 +450,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (state.theme === 'light') {
         document.body.classList.remove('bg-slate-950', 'text-slate-100');
         document.body.classList.add('bg-slate-50', 'text-slate-900');
-        elThemeToggle.innerHTML = '<i class="fas fa-moon text-amber-400"></i> Dark Mode';
+        elThemeToggle.innerHTML = '<i class="fas fa-moon text-purple-400"></i> Dark Mode';
       } else {
         document.body.classList.remove('bg-slate-50', 'text-slate-900');
         document.body.classList.add('bg-slate-950', 'text-slate-100');
-        elThemeToggle.innerHTML = '<i class="fas fa-sun text-amber-400"></i> Light Mode';
+        elThemeToggle.innerHTML = '<i class="fas fa-sun text-cyan-400"></i> Neon Mode';
       }
       recalculateAll();
     });
@@ -462,5 +462,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial Calculation
   recalculateAll();
-  renderOperationLogs(['Simulator loaded successfully. Click any cell on the grid to instantly compute its memory address!']);
+  renderOperationLogs(['Simulator initialized with Physical RAM Layout Visualizer.']);
 });
