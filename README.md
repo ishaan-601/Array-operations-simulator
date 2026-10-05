@@ -1,8 +1,8 @@
-# ⚡ Array Address & Physical RAM Simulator
+# 💎 Array Address & Physical RAM Simulator (Liquid Crystal Edition)
 
 A modern, interactive, and high-tech web application built to simulate **Array Memory Address Calculation**, **Physical DRAM Hardware Block Allocation**, **Insertion**, **Deletion**, **Linear Search**, and **Binary Search** for 1D and 2D arrays (Row-Major & Column-Major Order).
 
-![Array Address Simulator](https://img.shields.io/badge/Theme-Black_%26_Neon-00f0ff?style=for-the-badge)
+![Theme](https://img.shields.io/badge/Theme-iOS_Liquid_Crystal-00f0ff?style=for-the-badge&logo=apple)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
@@ -10,16 +10,27 @@ A modern, interactive, and high-tech web application built to simulate **Array M
 
 ---
 
-## ✨ Creative Features
+## ✨ Key Features
+
+- **💎 iOS Liquid Crystal & Multi-Theme Engine**:
+  - Frosted glass panels (`backdrop-filter: blur(24px)`), glossy surface reflections, translucent glass borders, and 3D tactile press physics (`active:scale-95`).
+  - **Multi-Theme Switcher**:
+    - 💎 **Liquid Crystal (iOS Glass)**
+    - ⚡ **Cyberpunk Black & Neon**
+    - 🌙 **Midnight Obsidian**
+    - ☀️ **Light Frost Glass**
+
+- **📱 View Mode Toolbar**:
+  - Switch between visual modes on demand:
+    - 📱 **All Views**: Logical Grid + Hardware RAM + Byte Strip
+    - 🧮 **Logical Matrix Only**
+    - 📼 **Hardware RAM Module Only**
+    - 🔬 **Contiguous Byte Strip Only**
 
 - **📼 Hardware Physical RAM Module Visualizer**:
   - Displays a realistic DDR5 DRAM Hardware Module layout.
-  - Highlights system buffers, unallocated RAM blocks, allocated array memory regions, and **locks/highlights the exact byte range blocked by the target element** (e.g. `4 Bytes: 0x040C - 0x040F`).
+  - Highlights system buffers, unallocated RAM blocks, allocated array memory regions, and **locks/highlights the exact byte range blocked by the target element** (e.g. `BLOCKED: 4 Bytes 0x03E8 - 0x03EB`).
   - Interactive: Click any DRAM block in physical memory to instantly update inputs and recalculate logical cell addresses.
-
-- **🎨 Professional Black & Neon Styling**:
-  - Futuristic dark space background (`#050811`) with glowing neon cyan (`#00f0ff`), neon emerald (`#00ff9d`), neon purple (`#bf00ff`), and neon amber accents.
-  - Glassmorphism panels with neon borders and text glows.
 
 - **🧮 1D & 2D Array Memory Address Derivation**:
   - **1D Arrays**: Address derivation with lower bounds ($LB$).
@@ -31,16 +42,11 @@ A modern, interactive, and high-tech web application built to simulate **Array M
   - Total Rows ($R$) & Total Columns ($C$).
   - Target Row ($i$) & Target Column ($j$).
 
-- **📐 Interactive Logical Grid & Memory Strip**:
-  - Displays array cells in a 1D strip or 2D matrix.
-  - **Clicking any cell automatically updates input parameters and recalculates memory address instantly!**
-
 - **🔍 Algorithm & Array Operation Stepper**:
-  - **Insertion**: Simulates placing an element at index $i$, shifting subsequent elements right, and updating memory maps.
+  - **Insertion**: Simulates placing an element at index $i$, shifting elements right, and updating memory maps.
   - **Deletion**: Simulates removing an element at index $i$, shifting elements left, and updating memory layout.
   - **Linear Search**: Animated step-by-step element inspection and address comparison.
-  - **Binary Search**: Animated $Low$, $High$, $Mid$ index calculation, mid address computation, and range reduction on sorted arrays.
-  - Animation player controls (Play, Pause, Step Next, Step Prev, Speed Slider, Execution Logs).
+  - **Binary Search**: Animated $Low$, $High$, $Mid$ index calculation, mid address computation, and range reduction.
 
 ---
 
@@ -50,11 +56,9 @@ A modern, interactive, and high-tech web application built to simulate **Array M
 $$\text{Address}(A[i]) = \text{Base} + (i - \text{LB}) \times W$$
 
 ### 2D Array Address Formula - Row-Major Order (RMO)
-In Row-Major Order, elements are stored row by row sequentially:
 $$\text{Address}(A[i][j]) = \text{Base} + [ (i - \text{LBR}) \times C + (j - \text{LBC}) ] \times W$$
 
 ### 2D Array Address Formula - Column-Major Order (CMO)
-In Column-Major Order, elements are stored column by column sequentially:
 $$\text{Address}(A[i][j]) = \text{Base} + [ (j - \text{LBC}) \times R + (i - \text{LBR}) ] \times W$$
 
 ---
@@ -63,14 +67,14 @@ $$\text{Address}(A[i][j]) = \text{Base} + [ (j - \text{LBC}) \times R + (i - \te
 
 ```
 array-address-simulator/
-├── index.html            # Main web application layout & RAM visualizer
+├── index.html            # iOS Liquid Crystal layout, theme & view mode toolbars
 ├── css/
-│   └── styles.css        # Professional Black & Neon theme, glowing borders & RAM styles
+│   └── styles.css        # iOS glass frosted styling, crystal buttons, 4 themes
 ├── js/
 │   ├── calculator.js     # Address calculation formulas & step breakdown engine
 │   ├── operations.js     # Insertion, Deletion, Linear & Binary Search step recorders
 │   ├── memory.js         # Interactive logical grid, memory strip & Physical RAM renderer
-│   └── app.js            # Main application event controller & state manager
+│   └── app.js            # Main controller, multi-theme & view mode engine
 ├── .gitignore            # Git ignore file
 └── README.md             # Project documentation
 ```
@@ -79,25 +83,13 @@ array-address-simulator/
 
 ## 🚀 How to Host on GitHub Pages
 
-1. **Commit & Push Updates**:
-   ```bash
-   git add .
-   git commit -m "Add Physical RAM layout visualizer and professional black & neon styling"
-   git push origin main
-   ```
+```bash
+git add .
+git commit -m "Add iOS Liquid Crystal glass theme, multi-theme engine and view mode toolbar"
+git push origin main
+```
 
-2. **Enable GitHub Pages**:
-   - Go to your repository **Settings** tab on GitHub.
-   - Select **Pages** on the left menu.
-   - Under **Build and deployment** -> **Branch**, select `main` branch and `/ (root)` folder.
-   - Click **Save**.
-   - Your live site will be deployed at `https://YOUR_USERNAME.github.io/array-address-simulator/`.
-
----
-
-## 💻 Local Quick Start
-
-Open `index.html` directly in any modern web browser to run locally.
+Enable GitHub Pages under **Settings** $\rightarrow$ **Pages** selecting `main` branch.
 
 ---
 

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" data-theme="crystal">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Array Memory & Physical RAM Address Visualizer</title>
+  <title>Array Address & Physical RAM Simulator - Liquid Crystal Edition</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -11,12 +11,12 @@
   <!-- FontAwesome Icons CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <!-- Google Fonts (Plus Jakarta Sans & Fira Code) -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <!-- Custom Neon Styles -->
+  <!-- Custom Glass Styles -->
   <link rel="stylesheet" href="css/styles.css">
 
   <script>
@@ -24,13 +24,6 @@
       darkMode: 'class',
       theme: {
         extend: {
-          colors: {
-            neonCyan: '#00f0ff',
-            neonEmerald: '#00ff9d',
-            neonPurple: '#bf00ff',
-            neonMagenta: '#ff007f',
-            neonAmber: '#ffb700'
-          },
           fontFamily: {
             sans: ['Plus Jakarta Sans', 'sans-serif'],
             mono: ['Fira Code', 'monospace'],
@@ -40,126 +33,160 @@
     }
   </script>
 </head>
-<body class="bg-[#050811] text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-300">
+<body class="min-h-screen flex flex-col font-sans transition-colors duration-500">
 
-  <!-- Neon Header Navbar -->
-  <header class="border-b border-cyan-500/20 bg-[#070b16]/90 backdrop-blur-xl sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+  <!-- Header Navbar with iOS Liquid Glass Styling -->
+  <header class="sticky top-0 z-50 p-3">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 rounded-2xl crystal-card flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Logo & Title -->
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-purple-600 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-cyan-500/30">
-          <i class="fas fa-memory text-lg text-slate-950"></i>
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-400 via-blue-500 to-purple-600 flex items-center justify-center text-white font-black shadow-lg shadow-cyan-500/30">
+          <i class="fas fa-cube text-lg text-white"></i>
         </div>
         <div>
-          <h1 class="text-xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-emerald-300 to-purple-400">
-            ARRAY ADDRESS & PHYSICAL RAM SIMULATOR
+          <h1 class="text-lg font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-300">
+            ARRAY ADDRESS & RAM SIMULATOR
           </h1>
-          <p class="text-xs text-slate-400 font-mono">Contiguous DRAM Allocation, RMO/CMO Derivation & Step-by-Step Operations</p>
+          <p class="text-xs text-slate-400 font-mono">iOS Liquid Crystal Edition • Contiguous Memory & RAM Visualizer</p>
         </div>
       </div>
 
-      <!-- Quick Presets & Theme Toggle -->
-      <div class="flex items-center gap-3">
-        <div class="flex items-center gap-2">
-          <label class="text-xs text-slate-400 font-medium hidden sm:inline"><i class="fas fa-bolt text-amber-400 mr-1"></i>Presets:</label>
-          <select id="preset-select" class="bg-slate-950 text-cyan-300 font-mono text-xs rounded-lg border border-cyan-500/30 px-3 py-1.5 focus:ring-2 focus:ring-cyan-400 focus:outline-none shadow-sm">
-            <option value="2d-rmo">2D Matrix (4x4, Row-Major Order)</option>
-            <option value="2d-cmo">2D Matrix (3x5, Column-Major Order)</option>
-            <option value="1d-int">1D Integer Array (8 elements)</option>
-            <option value="char-1d">1D Character Array (1 byte)</option>
+      <!-- Header Controls: Presets & Theme Selector -->
+      <div class="flex flex-wrap items-center gap-3">
+        
+        <!-- Presets -->
+        <div class="flex items-center gap-1.5 crystal-pill px-3 py-1.5">
+          <i class="fas fa-bolt text-amber-400 text-xs"></i>
+          <select id="preset-select" class="bg-transparent text-slate-200 text-xs font-semibold focus:outline-none cursor-pointer">
+            <option value="2d-rmo" class="bg-slate-900">2D Matrix (4x4, Row-Major)</option>
+            <option value="2d-cmo" class="bg-slate-900">2D Matrix (3x5, Col-Major)</option>
+            <option value="1d-int" class="bg-slate-900">1D Integer Array (8 items)</option>
+            <option value="char-1d" class="bg-slate-900">1D Char Array (1 Byte)</option>
           </select>
         </div>
 
-        <button id="theme-toggle" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-cyan-500/40 bg-slate-900 text-xs font-semibold text-cyan-300 hover:bg-cyan-500/10 transition shadow-sm">
-          <i class="fas fa-sun text-cyan-400"></i> Neon Mode
-        </button>
+        <!-- Multi-Theme Dropdown Button -->
+        <div class="flex items-center gap-1.5 crystal-pill px-3 py-1.5">
+          <i class="fas fa-palette text-cyan-400 text-xs"></i>
+          <select id="theme-select" class="bg-transparent text-cyan-300 text-xs font-bold focus:outline-none cursor-pointer">
+            <option value="crystal" class="bg-slate-900" selected>💎 Liquid Crystal (iOS Glass)</option>
+            <option value="neon" class="bg-slate-900">⚡ Cyberpunk Black & Neon</option>
+            <option value="obsidian" class="bg-slate-900">🌙 Midnight Obsidian</option>
+            <option value="light-frost" class="bg-slate-100 text-slate-900">☀️ Light Frost Glass</option>
+          </select>
+        </div>
+
       </div>
     </div>
   </header>
 
-  <!-- Main Workspace -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-6">
 
-    <!-- Configuration Input Bar -->
-    <section class="neon-panel p-5 rounded-2xl shadow-2xl">
-      <div class="flex items-center justify-between mb-4 pb-2 border-b border-cyan-500/20">
-        <h2 class="text-xs font-bold text-cyan-400 uppercase tracking-widest font-mono flex items-center gap-2">
-          <i class="fas fa-sliders text-cyan-400"></i> ARRAY MEMORY PARAMETERS
-        </h2>
-        <span class="text-xs text-slate-400 italic font-mono">Interactive: Click any cell or RAM block to recalculate</span>
+    <!-- View Mode Switcher Toolbar (All, Logical Matrix, Hardware RAM, Contiguous Strip) -->
+    <section class="flex items-center justify-between flex-wrap gap-3">
+      <div class="text-xs font-mono font-bold text-slate-400 flex items-center gap-2">
+        <i class="fas fa-eye text-cyan-400"></i> VISUALIZATION MODE:
       </div>
 
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 text-xs font-mono">
+      <div class="flex items-center gap-2 font-mono text-xs">
+        <button data-mode="all" class="view-mode-btn crystal-pill px-3 py-1.5 font-bold flex items-center gap-1.5 bg-cyan-500/20 border-cyan-400 text-cyan-300 shadow-lg">
+          <i class="fas fa-layer-group"></i> All Views
+        </button>
+        <button data-mode="matrix" class="view-mode-btn crystal-pill px-3 py-1.5 font-bold text-slate-300 flex items-center gap-1.5">
+          <i class="fas fa-th"></i> Logical Matrix
+        </button>
+        <button data-mode="ram" class="view-mode-btn crystal-pill px-3 py-1.5 font-bold text-slate-300 flex items-center gap-1.5">
+          <i class="fas fa-microchip"></i> Hardware RAM
+        </button>
+        <button data-mode="strip" class="view-mode-btn crystal-pill px-3 py-1.5 font-bold text-slate-300 flex items-center gap-1.5">
+          <i class="fas fa-grip-lines"></i> Byte Strip
+        </button>
+      </div>
+    </section>
+
+    <!-- Configuration Input Bar -->
+    <section class="crystal-card p-5 shadow-2xl">
+      <div class="flex items-center justify-between mb-4 pb-2 border-b border-white/10">
+        <h2 class="text-xs font-bold text-cyan-400 uppercase tracking-widest font-mono flex items-center gap-2">
+          <i class="fas fa-sliders text-cyan-400"></i> ARRAY PARAMETERS & TARGET SELECTION
+        </h2>
+        <span class="text-xs text-slate-400 italic font-mono">Tap any grid cell or RAM chip to derive address</span>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 text-xs font-mono">
         
         <!-- Dimension -->
         <div>
           <label class="block font-semibold text-slate-400 mb-1">Dimension</label>
-          <select id="input-dimension" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-cyan-300 font-bold focus:ring-2 focus:ring-cyan-400 focus:outline-none">
-            <option value="2D" selected>2D Matrix</option>
-            <option value="1D">1D Array</option>
+          <select id="input-dimension" class="w-full crystal-pill p-2 text-cyan-300 font-bold focus:outline-none">
+            <option value="2D" class="bg-slate-900" selected>2D Matrix</option>
+            <option value="1D" class="bg-slate-900">1D Array</option>
           </select>
         </div>
 
         <!-- Row/Col Major Order -->
         <div id="ordering-wrapper">
           <label class="block font-semibold text-slate-400 mb-1">Mapping Order</label>
-          <select id="input-ordering" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-purple-300 font-bold focus:ring-2 focus:ring-purple-400 focus:outline-none">
-            <option value="RMO" selected>Row-Major (RMO)</option>
-            <option value="CMO">Column-Major (CMO)</option>
+          <select id="input-ordering" class="w-full crystal-pill p-2 text-purple-300 font-bold focus:outline-none">
+            <option value="RMO" class="bg-slate-900" selected>Row-Major (RMO)</option>
+            <option value="CMO" class="bg-slate-900">Column-Major (CMO)</option>
           </select>
         </div>
 
         <!-- Base Address -->
         <div>
           <label class="block font-semibold text-slate-400 mb-1">Base Address (B)</label>
-          <input type="text" id="input-base-address" value="1000" class="w-full bg-slate-950 border border-emerald-500/40 rounded-lg p-2 text-emerald-400 font-bold focus:ring-2 focus:ring-emerald-400 focus:outline-none shadow-sm">
+          <input type="text" id="input-base-address" value="1000" class="w-full crystal-pill p-2 text-emerald-400 font-bold focus:outline-none">
         </div>
 
         <!-- Element Size -->
         <div>
           <label class="block font-semibold text-slate-400 mb-1">Element Size (W)</label>
-          <select id="input-element-size" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-cyan-300 font-bold focus:ring-2 focus:ring-cyan-400 focus:outline-none">
-            <option value="1">1 Byte (char)</option>
-            <option value="2">2 Bytes (short)</option>
-            <option value="4" selected>4 Bytes (int / float)</option>
-            <option value="8">8 Bytes (double / long)</option>
+          <select id="input-element-size" class="w-full crystal-pill p-2 text-cyan-300 font-bold focus:outline-none">
+            <option value="1" class="bg-slate-900">1 Byte (char)</option>
+            <option value="2" class="bg-slate-900">2 Bytes (short)</option>
+            <option value="4" class="bg-slate-900" selected>4 Bytes (int / float)</option>
+            <option value="8" class="bg-slate-900">8 Bytes (double / long)</option>
           </select>
         </div>
 
         <!-- Total Rows / Size -->
         <div>
           <label id="label-total-rows" class="block font-semibold text-slate-400 mb-1">Total Rows (R)</label>
-          <input type="number" id="input-total-rows" value="4" min="1" max="12" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 font-bold text-slate-200 focus:ring-2 focus:ring-cyan-400 focus:outline-none">
+          <input type="number" id="input-total-rows" value="4" min="1" max="12" class="w-full crystal-pill p-2 font-bold text-slate-200 focus:outline-none">
         </div>
 
         <!-- Total Columns -->
         <div id="total-cols-wrapper">
           <label class="block font-semibold text-slate-400 mb-1">Total Columns (C)</label>
-          <input type="number" id="input-total-cols" value="4" min="1" max="12" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 font-bold text-slate-200 focus:ring-2 focus:ring-cyan-400 focus:outline-none">
+          <input type="number" id="input-total-cols" value="4" min="1" max="12" class="w-full crystal-pill p-2 font-bold text-slate-200 focus:outline-none">
         </div>
 
         <!-- Target Row / Index -->
         <div>
           <label id="label-target-row" class="block font-semibold text-slate-400 mb-1">Target Row (i)</label>
-          <input type="number" id="input-target-row" value="2" min="0" class="w-full bg-slate-950 border border-purple-500/40 rounded-lg p-2 font-bold text-purple-400 focus:ring-2 focus:ring-purple-400 focus:outline-none">
+          <input type="number" id="input-target-row" value="2" min="0" class="w-full crystal-pill p-2 font-bold text-purple-400 focus:outline-none">
         </div>
 
         <!-- Target Column -->
         <div id="target-col-wrapper">
           <label class="block font-semibold text-slate-400 mb-1">Target Col (j)</label>
-          <input type="number" id="input-target-col" value="1" min="0" class="w-full bg-slate-950 border border-purple-500/40 rounded-lg p-2 font-bold text-purple-400 focus:ring-2 focus:ring-purple-400 focus:outline-none">
+          <input type="number" id="input-target-col" value="1" min="0" class="w-full crystal-pill p-2 font-bold text-purple-400 focus:outline-none">
         </div>
 
         <!-- Search/Insert Value -->
         <div id="op-value-wrapper" class="hidden col-span-2">
           <label id="op-value-label" class="block font-semibold text-slate-400 mb-1">Operation Value</label>
-          <input type="text" id="input-search-value" value="78" class="w-full bg-slate-950 border border-amber-500/40 rounded-lg p-2 font-bold text-amber-400 focus:ring-2 focus:ring-amber-400 focus:outline-none">
+          <input type="text" id="input-search-value" value="78" class="w-full crystal-pill p-2 font-bold text-amber-400 focus:outline-none">
           <input type="text" id="input-insert-value" value="99" class="hidden">
         </div>
 
       </div>
     </section>
 
-    <!-- NEW FEATURE: PHYSICAL HARDWARE RAM MODULE VISUALIZER CARD -->
+    <!-- PHYSICAL HARDWARE RAM MODULE VISUALIZER CARD -->
     <section id="ram-layout-container" class="w-full"></section>
 
     <!-- Main Workspace Split Grid -->
@@ -169,18 +196,18 @@
       <div class="lg:col-span-7 flex flex-col gap-6">
 
         <!-- Logical Matrix Card -->
-        <section class="neon-panel p-5 rounded-2xl shadow-xl flex flex-col flex-1">
+        <section id="card-matrix" class="crystal-card p-5 shadow-xl flex flex-col flex-1">
           <div class="flex items-center justify-between mb-4">
             <div>
               <h3 class="text-sm font-bold font-mono text-cyan-400 uppercase tracking-wider flex items-center gap-2">
-                <i class="fas fa-th text-cyan-400"></i> INTERACTIVE LOGICAL ARRAY MATRIX
+                <i class="fas fa-th text-cyan-400"></i> INTERACTIVE LOGICAL MATRIX
               </h3>
-              <p class="text-xs text-slate-400">Click any grid cell to derive its memory address formula instantly</p>
+              <p class="text-xs text-slate-400">Tap any cell to inspect target address formula</p>
             </div>
             
             <div class="flex items-center gap-3 text-xs font-mono">
-              <span class="flex items-center gap-1 text-emerald-400"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/50 inline-block"></span> Base</span>
-              <span class="flex items-center gap-1 text-purple-400"><span class="w-2.5 h-2.5 rounded-full bg-purple-400 shadow-sm shadow-purple-400/50 inline-block"></span> Target Blocked</span>
+              <span class="flex items-center gap-1 text-emerald-400"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block shadow-sm"></span> Base</span>
+              <span class="flex items-center gap-1 text-cyan-400"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400 inline-block shadow-sm"></span> Target</span>
             </div>
           </div>
 
@@ -189,12 +216,12 @@
         </section>
 
         <!-- Physical Memory Strip Card -->
-        <section class="neon-panel p-5 rounded-2xl shadow-xl">
+        <section id="card-strip" class="crystal-card p-5 shadow-xl">
           <div class="flex items-center justify-between mb-3">
             <h3 class="text-xs font-bold font-mono text-slate-200 uppercase tracking-wider flex items-center gap-2">
-              <i class="fas fa-microchip text-emerald-400"></i> CONTIGUOUS BYTE MEMORY STRIP
+              <i class="fas fa-grip-lines text-emerald-400"></i> CONTIGUOUS BYTE MEMORY STRIP
             </h3>
-            <span class="text-xs font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/40">Contiguous Addresses</span>
+            <span class="text-xs font-mono text-emerald-400 crystal-pill px-2.5 py-0.5 font-bold">Sequential Bytes</span>
           </div>
 
           <!-- Dynamic Memory Strip Container -->
@@ -207,85 +234,83 @@
       <div class="lg:col-span-5 flex flex-col gap-6">
 
         <!-- Final Address Result Callout Card -->
-        <section class="bg-gradient-to-br from-slate-950 via-cyan-950/40 to-slate-950 p-6 rounded-2xl border border-cyan-500/40 shadow-2xl relative overflow-hidden">
-          <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none"></div>
-
+        <section class="crystal-card p-6 shadow-2xl relative overflow-hidden border-cyan-400/40">
           <div class="text-xs font-bold text-cyan-400 font-mono uppercase tracking-widest mb-1 flex items-center justify-between">
             <span>Computed Memory Address</span>
             <span id="result-offset" class="text-xs font-mono text-purple-300 font-semibold"></span>
           </div>
 
           <div class="flex items-baseline gap-4 my-2">
-            <div id="result-hex" class="text-3xl font-extrabold font-mono text-emerald-400 tracking-tight neon-text-glow-emerald">0x0000</div>
+            <div id="result-hex" class="text-3xl font-extrabold font-mono text-emerald-400 tracking-tight">0x0000</div>
             <div class="text-slate-400 text-sm font-mono">(Decimal: <span id="result-decimal" class="text-slate-100 font-bold">1000</span>)</div>
           </div>
         </section>
 
         <!-- Operation Tabs & Stepper -->
-        <section class="neon-panel p-5 rounded-2xl shadow-xl flex flex-col gap-4">
+        <section class="crystal-card p-5 shadow-xl flex flex-col gap-4">
 
           <!-- Tabs -->
-          <div class="grid grid-cols-5 gap-1 p-1 bg-slate-950 rounded-xl border border-slate-800 text-xs font-mono">
-            <button data-tab="calc" class="op-tab-btn py-2 px-1 rounded-lg bg-cyan-500 text-slate-950 font-bold shadow-lg shadow-cyan-500/30 text-center transition">
+          <div class="grid grid-cols-5 gap-1.5 p-1.5 crystal-pill text-xs font-mono">
+            <button data-tab="calc" class="op-tab-btn crystal-btn py-2 px-1 bg-cyan-500 text-slate-950 font-bold text-center">
               <i class="fas fa-calculator block text-sm mb-0.5"></i> Address
             </button>
-            <button data-tab="insert" class="op-tab-btn py-2 px-1 rounded-lg bg-slate-900 text-slate-400 hover:text-slate-200 text-center transition">
+            <button data-tab="insert" class="op-tab-btn crystal-btn py-2 px-1 text-slate-300 text-center">
               <i class="fas fa-plus block text-sm mb-0.5"></i> Insert
             </button>
-            <button data-tab="delete" class="op-tab-btn py-2 px-1 rounded-lg bg-slate-900 text-slate-400 hover:text-slate-200 text-center transition">
+            <button data-tab="delete" class="op-tab-btn crystal-btn py-2 px-1 text-slate-300 text-center">
               <i class="fas fa-trash block text-sm mb-0.5"></i> Delete
             </button>
-            <button data-tab="linear" class="op-tab-btn py-2 px-1 rounded-lg bg-slate-900 text-slate-400 hover:text-slate-200 text-center transition">
+            <button data-tab="linear" class="op-tab-btn crystal-btn py-2 px-1 text-slate-300 text-center">
               <i class="fas fa-search block text-sm mb-0.5"></i> Linear
             </button>
-            <button data-tab="binary" class="op-tab-btn py-2 px-1 rounded-lg bg-slate-900 text-slate-400 hover:text-slate-200 text-center transition">
+            <button data-tab="binary" class="op-tab-btn crystal-btn py-2 px-1 text-slate-300 text-center">
               <i class="fas fa-layer-group block text-sm mb-0.5"></i> Binary
             </button>
           </div>
 
           <!-- Step Player Bar -->
-          <div class="flex items-center justify-between gap-3 p-3 bg-slate-950/80 rounded-xl border border-slate-800">
+          <div class="flex items-center justify-between gap-3 p-3 crystal-pill">
             <div class="flex items-center gap-1.5">
-              <button id="btn-reset" class="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs transition" title="Reset">
+              <button id="btn-reset" class="crystal-btn p-2 text-slate-300 text-xs" title="Reset">
                 <i class="fas fa-rotate-left"></i>
               </button>
-              <button id="btn-prev" class="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs transition" title="Previous Step">
+              <button id="btn-prev" class="crystal-btn p-2 text-slate-300 text-xs" title="Previous Step">
                 <i class="fas fa-step-backward"></i>
               </button>
-              <button id="btn-play" class="px-3.5 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-extrabold text-xs transition flex items-center gap-1 shadow-md shadow-cyan-500/20">
+              <button id="btn-play" class="crystal-btn px-4 py-2 bg-cyan-500 text-slate-950 font-extrabold text-xs flex items-center gap-1">
                 <i class="fas fa-play"></i> Play
               </button>
-              <button id="btn-next" class="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs transition" title="Next Step">
+              <button id="btn-next" class="crystal-btn p-2 text-slate-300 text-xs" title="Next Step">
                 <i class="fas fa-step-forward"></i>
               </button>
             </div>
 
             <div class="flex items-center gap-2 text-xs">
               <span id="step-indicator" class="font-mono text-cyan-400 font-semibold">Step 0 of 0</span>
-              <div class="flex items-center gap-1 text-slate-400 border-l border-slate-800 pl-2">
-                <i class="fas fa-gauge text-slate-500"></i>
-                <input type="range" id="speed-slider" min="100" max="1900" value="1300" class="w-16 h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer">
+              <div class="flex items-center gap-1 text-slate-400 border-l border-white/10 pl-2">
+                <i class="fas fa-gauge text-slate-400"></i>
+                <input type="range" id="speed-slider" min="100" max="1900" value="1300" class="w-16 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer">
                 <span id="speed-value" class="font-mono text-[10px]">0.8s</span>
               </div>
             </div>
           </div>
 
           <!-- Formula Raw Box -->
-          <div class="p-3 bg-slate-950 rounded-xl border border-purple-500/30 font-mono text-xs text-purple-300 flex items-center justify-between">
-            <span class="text-slate-500 font-sans text-[11px] font-bold">FORMULA:</span>
+          <div class="p-3 crystal-pill font-mono text-xs text-purple-300 flex items-center justify-between">
+            <span class="text-slate-400 font-sans text-[11px] font-bold">FORMULA:</span>
             <span id="formula-raw" class="font-bold">Address(A[i][j]) = Base + [(i - LBR)*C + (j - LBC)] * W</span>
           </div>
 
           <!-- Step-by-Step Mathematical Calculation Cards -->
           <div>
-            <h4 class="text-xs font-bold text-slate-400 font-mono uppercase tracking-wider mb-2">STEP-BY-STEP CALCULATION</h4>
+            <h4 class="text-xs font-bold text-slate-400 font-mono uppercase tracking-wider mb-2">STEP-BY-STEP DERIVATION</h4>
             <div id="calculation-steps-container" class="space-y-2 max-h-[220px] overflow-y-auto pr-1"></div>
           </div>
 
           <!-- Operation Execution Logs -->
           <div>
             <h4 class="text-xs font-bold text-slate-400 font-mono uppercase tracking-wider mb-2">EXECUTION LOG CONSOLE</h4>
-            <div id="operation-logs-container" class="max-h-[140px] overflow-y-auto p-2.5 bg-slate-950 rounded-xl border border-slate-900 space-y-1"></div>
+            <div id="operation-logs-container" class="max-h-[140px] overflow-y-auto p-2.5 crystal-pill space-y-1"></div>
           </div>
 
         </section>
@@ -297,9 +322,9 @@
   </main>
 
   <!-- Footer -->
-  <footer class="border-t border-cyan-500/20 bg-[#070b16]/60 py-4 text-center text-xs text-slate-500 font-mono">
+  <footer class="mt-auto p-4 text-center text-xs text-slate-500 font-mono border-t border-white/10">
     <div class="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-between gap-2">
-      <div>Array Address & Physical RAM Simulator • Neon Cyberpunk Architecture</div>
+      <div>Array Address & Physical RAM Simulator • iOS Liquid Crystal Edition</div>
       <div class="flex items-center gap-4">
         <a href="https://github.com" target="_blank" class="hover:text-cyan-400 transition flex items-center gap-1">
           <i class="fab fa-github"></i> GitHub Ready

@@ -1,6 +1,6 @@
 /**
  * Main Application Controller (js/app.js)
- * Manages state, event listeners, operation step animation player, and UI updates.
+ * Manages state, event listeners, multi-theme engine, view mode switcher, operation stepper, and UI updates.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,7 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
     activeTab: 'calc', // 'calc', 'insert', 'delete', 'linear', 'binary'
     searchValue: '78',
     insertValue: '99',
-    theme: 'dark',
+    theme: 'crystal', // 'crystal', 'neon', 'obsidian', 'light-frost'
+    viewMode: 'all', // 'all', 'matrix', 'ram', 'strip'
     // Stepper State
     animation: {
       isPlaying: false,
@@ -61,6 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const elStepsContainer = document.getElementById('calculation-steps-container');
   const elOperationLogs = document.getElementById('operation-logs-container');
 
+  // View Containers
+  const cardMatrix = document.getElementById('card-matrix');
+  const cardRam = document.getElementById('ram-layout-container');
+  const cardStrip = document.getElementById('card-strip');
+
   // Stepper Controls
   const elBtnPlay = document.getElementById('btn-play');
   const elBtnPrev = document.getElementById('btn-prev');
@@ -70,11 +76,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const elSpeedValue = document.getElementById('speed-value');
   const elStepIndicator = document.getElementById('step-indicator');
 
-  // Presets & Theme
+  // Presets, Theme & View Switchers
   const elPresetSelect = document.getElementById('preset-select');
-  const elThemeToggle = document.getElementById('theme-toggle');
+  const elThemeSelect = document.getElementById('theme-select');
+  const viewModeButtons = document.querySelectorAll('.view-mode-btn');
 
-  // Initialize Memory Visualizer with Logical Grid, Memory Strip, and Hardware RAM Layout Containers
+  // Initialize Memory Visualizer
   const visualizer = new MemoryVisualizer(
     'grid-visualizer-container', 
     'memory-strip-container', 
@@ -95,6 +102,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Generate initial sample data
   visualizer.generateSampleData(state);
+
+  /**
+   * Set Active Theme on root HTML element
+   */
+  function applyTheme(themeName) {
+    state.theme = themeName;
+    document.documentElement.setAttribute('data-theme', themeName);
+    if (elThemeSelect) elThemeSelect.value = themeName;
+  }
+
+  /**
+   * Set Active View Mode (All, Matrix, RAM, Strip)
+   */
+  function applyViewMode(mode) {
+    state.viewMode = mode;
+    
+    // Update button visual highlights
+    viewModeButtons.forEach(btn => {
+      if (btn.dataset.mode === mode) {
+        btn.classList.add('bg-cyan-500/20', 'border-cyan-400', 'text-cyan-300', 'shadow-lg');
+      } else {
+        btn.classList.remove('bg-cyan-500/20', 'border-cyan-400', 'text-cyan-300', 'shadow-lg');
+      }
+    });
+
+    if (mode === 'all') {
+      if (cardMatrix) cardMatrix.classList.remove('hidden');
+      if (cardRam) cardRam.classList.remove('hidden');
+      if (cardStrip) cardStrip.classList.remove('hidden');
+    } else if (mode === 'matrix') {
+      if (cardMatrix) cardMatrix.classList.remove('hidden');
+      if (cardRam) cardRam.classList.add('hidden');
+      if (cardStrip) cardStrip.classList.add('hidden');
+    } else if (mode === 'ram') {
+      if (cardMatrix) cardMatrix.classList.add('hidden');
+      if (cardRam) cardRam.classList.remove('hidden');
+      if (cardStrip) cardStrip.classList.add('hidden');
+    } else if (mode === 'strip') {
+      if (cardMatrix) cardMatrix.classList.add('hidden');
+      if (cardRam) cardRam.classList.add('hidden');
+      if (cardStrip) cardStrip.classList.remove('hidden');
+    }
+  }
 
   /**
    * Sync input elements with internal state
@@ -201,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
       elStepsContainer.innerHTML = '';
       calcResult.steps.forEach(step => {
         const stepCard = document.createElement('div');
-        stepCard.className = 'p-3 rounded-xl border border-cyan-500/20 bg-slate-900/60 flex flex-col gap-1 transition-all hover:border-cyan-500/50';
+        stepCard.className = 'crystal-btn p-3 text-left flex flex-col gap-1 transition-all';
         stepCard.innerHTML = `
           <div class="text-xs font-bold text-cyan-400 font-mono">${step.title}</div>
           <div class="text-xs font-mono text-slate-200 leading-relaxed">${step.description}</div>
@@ -210,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // 4. Update Memory Visualizers (Logical Grid, Memory Strip, RAM Layout)
+    // 4. Update Memory Visualizers
     visualizer.renderLogicalGrid(state, activeHighlights);
   }
 
@@ -225,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tab = state.activeTab;
     if (tab === 'calc') {
       recalculateAll();
-      renderOperationLogs(['Address calculation active. Click any cell or change parameters to recalculate.']);
+      renderOperationLogs(['Address calculation mode active. Click any cell or RAM block to derive memory address.']);
       return;
     }
 
@@ -235,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
       state.animation.stepsData = opResult.steps;
     } else if (tab === 'binary') {
       if (state.dimension !== '1D') {
-        renderOperationLogs(['⚠️ Binary Search is demonstrated on a 1D sorted array. Auto-switching to 1D mode.']);
+        renderOperationLogs(['⚠️ Binary Search requires a 1D sorted array. Auto-switching to 1D mode.']);
         state.dimension = '1D';
         elDimension.value = '1D';
         readStateFromInputs();
@@ -301,9 +351,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  /**
-   * Animation Play/Pause Player
-   */
   function playAnimation() {
     if (state.animation.isPlaying) return;
     if (state.animation.currentStep >= state.animation.totalSteps - 1) {
@@ -330,22 +377,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (elBtnPlay) elBtnPlay.innerHTML = '<i class="fas fa-play mr-1"></i> Play';
   }
 
-  /**
-   * Render logs to container
-   */
   function renderOperationLogs(logsArray) {
     if (!elOperationLogs) return;
     elOperationLogs.innerHTML = '';
     logsArray.forEach(msg => {
       const logEntry = document.createElement('div');
-      logEntry.className = 'text-xs font-mono py-1 px-2.5 rounded bg-slate-950/80 text-cyan-300 border-l-2 border-cyan-400 mb-1';
+      logEntry.className = 'text-xs font-mono py-1 px-2.5 rounded bg-black/40 text-cyan-300 border-l-2 border-cyan-400 mb-1';
       logEntry.innerText = msg;
       elOperationLogs.appendChild(logEntry);
     });
     elOperationLogs.scrollTop = elOperationLogs.scrollHeight;
   }
 
-  // Event Listeners for Input Change
+  // Event Listeners for Inputs
   [elDimension, elOrdering, elBaseAddress, elElementSize, elTotalRows, elTotalCols, elTargetRow, elTargetCol, elSearchValue, elInsertValue].forEach(el => {
     if (el) {
       el.addEventListener('input', () => {
@@ -358,15 +402,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // View Mode Switcher Listeners
+  viewModeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      applyViewMode(btn.dataset.mode);
+    });
+  });
+
   // Operation Tabs Handling
   const tabButtons = document.querySelectorAll('.op-tab-btn');
   tabButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      tabButtons.forEach(b => b.classList.remove('bg-cyan-500', 'text-slate-950', 'font-bold', 'shadow-lg', 'shadow-cyan-500/30'));
-      tabButtons.forEach(b => b.classList.add('bg-slate-900', 'text-slate-400', 'hover:text-slate-200'));
+      tabButtons.forEach(b => b.classList.remove('bg-cyan-500', 'text-slate-950', 'font-bold'));
+      tabButtons.forEach(b => b.classList.add('text-slate-300'));
 
-      btn.classList.remove('bg-slate-900', 'text-slate-400', 'hover:text-slate-200');
-      btn.classList.add('bg-cyan-500', 'text-slate-950', 'font-bold', 'shadow-lg', 'shadow-cyan-500/30');
+      btn.classList.remove('text-slate-300');
+      btn.classList.add('bg-cyan-500', 'text-slate-950', 'font-bold');
 
       state.activeTab = btn.dataset.tab;
       
@@ -401,7 +452,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Preset Selector
+  // Presets Selector
   if (elPresetSelect) {
     elPresetSelect.addEventListener('change', (e) => {
       const preset = e.target.value;
@@ -442,25 +493,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Theme Toggle
-  if (elThemeToggle) {
-    elThemeToggle.addEventListener('click', () => {
-      state.theme = state.theme === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', state.theme);
-      if (state.theme === 'light') {
-        document.body.classList.remove('bg-slate-950', 'text-slate-100');
-        document.body.classList.add('bg-slate-50', 'text-slate-900');
-        elThemeToggle.innerHTML = '<i class="fas fa-moon text-purple-400"></i> Dark Mode';
-      } else {
-        document.body.classList.remove('bg-slate-50', 'text-slate-900');
-        document.body.classList.add('bg-slate-950', 'text-slate-100');
-        elThemeToggle.innerHTML = '<i class="fas fa-sun text-cyan-400"></i> Neon Mode';
-      }
-      recalculateAll();
+  // Theme Dropdown Selector
+  if (elThemeSelect) {
+    elThemeSelect.addEventListener('change', (e) => {
+      applyTheme(e.target.value);
     });
   }
 
-  // Initial Calculation
+  // Initial Calculation & Theme setup
+  applyTheme('crystal');
+  applyViewMode('all');
   recalculateAll();
-  renderOperationLogs(['Simulator initialized with Physical RAM Layout Visualizer.']);
+  renderOperationLogs(['Liquid Crystal Simulator loaded successfully.']);
 });
