@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Array Address & Physical RAM Simulator - Liquid Crystal Edition</title>
+  <title>Array Memory & Physical RAM Address Visualizer</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -16,8 +16,302 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <!-- Custom Glass Styles -->
-  <link rel="stylesheet" href="css/styles.css">
+  <!-- Embedded Complete CSS Stylesheet -->
+  <style>
+    /* Array Address Simulator - Embedded Liquid Crystal & Multi-Theme Styles */
+
+    /* THEME 1: LIQUID CRYSTAL GLASS (DEFAULT iOS CRYSTAL) */
+    :root, [data-theme="crystal"] {
+      --bg-primary: #070a14;
+      --bg-secondary: rgba(255, 255, 255, 0.08);
+      --bg-card: rgba(255, 255, 255, 0.07);
+      --bg-card-solid: #0d1222;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --border-color: rgba(255, 255, 255, 0.2);
+      --border-bright: rgba(255, 255, 255, 0.45);
+      
+      --accent-primary: #00f0ff;
+      --accent-secondary: #007aff;
+      --accent-purple: #a855f7;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+
+      --cell-bg: rgba(255, 255, 255, 0.06);
+      --cell-border: rgba(255, 255, 255, 0.18);
+      --glass-reflection: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.02) 60%);
+      --glass-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+    }
+
+    /* THEME 2: CYBERPUNK BLACK & NEON */
+    [data-theme="neon"] {
+      --bg-primary: #03050a;
+      --bg-secondary: #080d1a;
+      --bg-card: rgba(13, 19, 34, 0.9);
+      --bg-card-solid: #0d1322;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --border-color: rgba(0, 240, 255, 0.25);
+      --border-bright: rgba(0, 240, 255, 0.6);
+      
+      --accent-primary: #00f0ff;
+      --accent-secondary: #bf00ff;
+      --accent-purple: #bf00ff;
+      --accent-emerald: #00ff9d;
+      --accent-amber: #ffb700;
+
+      --cell-bg: #090e1a;
+      --cell-border: rgba(0, 240, 255, 0.2);
+      --glass-reflection: linear-gradient(135deg, rgba(0, 240, 255, 0.15) 0%, transparent 80%);
+      --glass-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 240, 255, 0.15);
+    }
+
+    /* THEME 3: MIDNIGHT OBSIDIAN */
+    [data-theme="obsidian"] {
+      --bg-primary: #090a16;
+      --bg-secondary: #121429;
+      --bg-card: rgba(22, 25, 48, 0.8);
+      --bg-card-solid: #161930;
+      --text-primary: #f1f5f9;
+      --text-secondary: #a0aec0;
+      --border-color: rgba(139, 92, 246, 0.25);
+      --border-bright: rgba(139, 92, 246, 0.6);
+
+      --accent-primary: #a855f7;
+      --accent-secondary: #6366f1;
+      --accent-purple: #d946ef;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+
+      --cell-bg: #101224;
+      --cell-border: rgba(139, 92, 246, 0.2);
+      --glass-reflection: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, transparent 80%);
+      --glass-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    /* THEME 4: LIGHT FROST (iOS LIGHT GLASS) */
+    [data-theme="light-frost"] {
+      --bg-primary: #f1f5f9;
+      --bg-secondary: rgba(255, 255, 255, 0.85);
+      --bg-card: rgba(255, 255, 255, 0.75);
+      --bg-card-solid: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --border-color: rgba(255, 255, 255, 0.8);
+      --border-bright: rgba(0, 122, 255, 0.5);
+
+      --accent-primary: #007aff;
+      --accent-secondary: #5856d6;
+      --accent-purple: #af52de;
+      --accent-emerald: #34c759;
+      --accent-amber: #ff9500;
+
+      --cell-bg: rgba(255, 255, 255, 0.65);
+      --cell-border: rgba(0, 0, 0, 0.08);
+      --glass-reflection: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.2) 100%);
+      --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    /* Base Body Styles */
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      transition: background-color 0.4s ease, color 0.4s ease;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Liquid Light Spheres in Background */
+    body::before, body::after {
+      content: '';
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(140px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.45;
+    }
+
+    body::before {
+      top: -10%; left: -10%;
+      width: 50vw; height: 50vw;
+      background: radial-gradient(circle, var(--accent-primary) 0%, transparent 70%);
+    }
+
+    body::after {
+      bottom: -10%; right: -10%;
+      width: 50vw; height: 50vw;
+      background: radial-gradient(circle, var(--accent-purple) 0%, transparent 70%);
+    }
+
+    /* iOS CRYSTAL / LIQUID GLASS BUTTONS & CLICKABLES */
+    .crystal-btn, .crystal-pill {
+      position: relative;
+      background: var(--bg-card);
+      backdrop-filter: blur(20px) saturate(190%);
+      -webkit-backdrop-filter: blur(20px) saturate(190%);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--glass-shadow);
+      border-radius: 12px;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      overflow: hidden;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    /* Glass Surface Reflection Overlay */
+    .crystal-btn::before, .crystal-card::before, .crystal-pill::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--glass-reflection);
+      pointer-events: none;
+      border-radius: inherit;
+    }
+
+    /* Interactive Tactile Press Animation */
+    .crystal-btn:hover, .crystal-pill:hover {
+      transform: translateY(-2px) scale(1.02);
+      border-color: var(--border-bright);
+      box-shadow: 0 12px 30px rgba(0, 240, 255, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.6);
+    }
+
+    .crystal-btn:active, .crystal-pill:active {
+      transform: translateY(1px) scale(0.96);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Crystal Card Containers */
+    .crystal-card {
+      position: relative;
+      background: var(--bg-card);
+      backdrop-filter: blur(24px) saturate(190%);
+      -webkit-backdrop-filter: blur(24px) saturate(190%);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--glass-shadow);
+      border-radius: 20px;
+      transition: all 0.35s ease;
+    }
+
+    .crystal-card:hover {
+      border-color: var(--border-bright);
+    }
+
+    /* Grid Cell Crystal Styling */
+    .grid-cell {
+      position: relative;
+      background: var(--cell-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--cell-border);
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .grid-cell:hover {
+      transform: translateY(-3px) scale(1.04);
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+    }
+
+    /* Grid Cell Highlight States */
+    .grid-cell.target-cell {
+      border-color: var(--accent-primary) !important;
+      background: rgba(0, 240, 255, 0.18) !important;
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.6), inset 0 0 15px rgba(0, 240, 255, 0.3);
+      transform: scale(1.05);
+      z-index: 10;
+    }
+
+    .grid-cell.base-cell {
+      border-color: var(--accent-emerald) !important;
+      background: rgba(16, 185, 129, 0.15) !important;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .grid-cell.active-inspect {
+      border-color: var(--accent-amber) !important;
+      background: rgba(245, 158, 11, 0.22) !important;
+      box-shadow: 0 0 25px rgba(245, 158, 11, 0.6);
+      animation: pulse-inspect 0.8s infinite alternate;
+    }
+
+    .grid-cell.found-cell {
+      border-color: var(--accent-emerald) !important;
+      background: rgba(16, 185, 129, 0.35) !important;
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.8);
+      animation: pulse-found 0.7s ease-in-out;
+    }
+
+    .grid-cell.low-high-range {
+      border-color: var(--accent-purple) !important;
+      background: rgba(168, 85, 247, 0.15) !important;
+    }
+
+    .grid-cell.inserted-cell {
+      border-color: var(--accent-emerald) !important;
+      background: rgba(16, 185, 129, 0.25) !important;
+    }
+
+    .grid-cell.shifting-cell {
+      border-color: var(--accent-amber) !important;
+      background: rgba(245, 158, 11, 0.25) !important;
+    }
+
+    /* PHYSICAL RAM MODULE VISUAL STYLING */
+    .ram-stick-container {
+      background: linear-gradient(135deg, rgba(9, 14, 26, 0.9) 0%, rgba(4, 7, 13, 0.95) 100%);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ram-chip-block {
+      background: rgba(6, 10, 20, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      transition: all 0.25s ease;
+    }
+
+    .ram-chip-block:hover {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+    }
+
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.2);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-bright);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-primary);
+    }
+
+    /* Animations */
+    @keyframes pulse-inspect {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.05); }
+    }
+
+    @keyframes pulse-found {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1.03); }
+    }
+  </style>
 
   <script>
     tailwind.config = {
@@ -48,14 +342,14 @@
           <h1 class="text-lg font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-300">
             ARRAY ADDRESS & RAM SIMULATOR
           </h1>
-          <p class="text-xs text-slate-400 font-mono">iOS Liquid Crystal Edition • Contiguous Memory & RAM Visualizer</p>
+          <p class="text-xs text-slate-400 font-mono">Single-File iOS Liquid Crystal Edition • Contiguous Memory & RAM Visualizer</p>
         </div>
       </div>
 
       <!-- Header Controls: Presets & Theme Selector -->
       <div class="flex flex-wrap items-center gap-3">
         
-        <!-- Presets -->
+        <!-- Presets Selector -->
         <div class="flex items-center gap-1.5 crystal-pill px-3 py-1.5">
           <i class="fas fa-bolt text-amber-400 text-xs"></i>
           <select id="preset-select" class="bg-transparent text-slate-200 text-xs font-semibold focus:outline-none cursor-pointer">
@@ -66,7 +360,7 @@
           </select>
         </div>
 
-        <!-- Multi-Theme Dropdown Button -->
+        <!-- Multi-Theme Dropdown Selector Button -->
         <div class="flex items-center gap-1.5 crystal-pill px-3 py-1.5">
           <i class="fas fa-palette text-cyan-400 text-xs"></i>
           <select id="theme-select" class="bg-transparent text-cyan-300 text-xs font-bold focus:outline-none cursor-pointer">
@@ -324,7 +618,7 @@
   <!-- Footer -->
   <footer class="mt-auto p-4 text-center text-xs text-slate-500 font-mono border-t border-white/10">
     <div class="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-between gap-2">
-      <div>Array Address & Physical RAM Simulator • iOS Liquid Crystal Edition</div>
+      <div>Array Address & Physical RAM Simulator • Standalone Single-File Application</div>
       <div class="flex items-center gap-4">
         <a href="https://github.com" target="_blank" class="hover:text-cyan-400 transition flex items-center gap-1">
           <i class="fab fa-github"></i> GitHub Ready
@@ -333,10 +627,1122 @@
     </div>
   </footer>
 
-  <!-- App Scripts -->
-  <script src="js/calculator.js"></script>
-  <script src="js/operations.js"></script>
-  <script src="js/memory.js"></script>
-  <script src="js/app.js"></script>
+  <!-- EMBEDDED COMPLETE JAVASCRIPT APPLICATION CODE -->
+  <script>
+    /**
+     * 1. Array Address Calculator Module
+     */
+    class ArrayCalculator {
+      static parseBaseAddress(baseInput) {
+        if (typeof baseInput === 'number') return baseInput;
+        const str = String(baseInput).trim();
+        if (str.toLowerCase().startsWith('0x')) return parseInt(str, 16) || 1000;
+        return parseInt(str, 10) || 1000;
+      }
+
+      static formatHex(address, padDigits = 4) {
+        if (isNaN(address)) return '0x0000';
+        return '0x' + Math.max(0, address).toString(16).toUpperCase().padStart(padDigits, '0');
+      }
+
+      static calculate1D({ baseAddress, elementSize, targetIndex, lowerBound = 0 }) {
+        const B = this.parseBaseAddress(baseAddress);
+        const W = Number(elementSize) || 4;
+        const i = Number(targetIndex) || 0;
+        const LB = Number(lowerBound) || 0;
+
+        const relativeIndex = i - LB;
+        const byteOffset = relativeIndex * W;
+        const finalAddress = B + byteOffset;
+
+        return {
+          dimension: '1D',
+          baseAddress: B,
+          baseAddressHex: this.formatHex(B),
+          elementSize: W,
+          targetIndex: i,
+          lowerBound: LB,
+          relativeIndex,
+          byteOffset,
+          finalAddress,
+          finalAddressHex: this.formatHex(finalAddress),
+          formulaRaw: 'Address(A[i]) = Base + (i - LB) × W',
+          steps: [
+            {
+              title: 'Step 1: Identify Parameters',
+              description: `Base Address = ${B} (${this.formatHex(B)}), Element Size (W) = ${W}B, Target Index (i) = ${i}, LB = ${LB}`
+            },
+            {
+              title: 'Step 2: Calculate Relative Index Offset',
+              description: `Index Offset = (i - LB) = (${i} - ${LB}) = ${relativeIndex} elements`
+            },
+            {
+              title: 'Step 3: Calculate Memory Byte Offset',
+              description: `Byte Offset = Offset × W = ${relativeIndex} × ${W} = ${byteOffset} bytes`
+            },
+            {
+              title: 'Step 4: Add Byte Offset to Base Address',
+              description: `Final Address = Base + Byte Offset = ${B} + ${byteOffset} = ${finalAddress} (Decimal) = ${this.formatHex(finalAddress)} (Hex)`
+            }
+          ]
+        };
+      }
+
+      static calculate2DRMO({ baseAddress, elementSize, totalRows, totalCols, targetRow, targetCol, lowerBoundRow = 0, lowerBoundCol = 0 }) {
+        const B = this.parseBaseAddress(baseAddress);
+        const W = Number(elementSize) || 4;
+        const R = Number(totalRows) || 4;
+        const C = Number(totalCols) || 4;
+        const i = Number(targetRow) || 0;
+        const j = Number(targetCol) || 0;
+        const LBR = Number(lowerBoundRow) || 0;
+        const LBC = Number(lowerBoundCol) || 0;
+
+        const rowOffset = i - LBR;
+        const colOffset = j - LBC;
+        const elementsInPrecedingRows = rowOffset * C;
+        const totalElementOffset = elementsInPrecedingRows + colOffset;
+        const byteOffset = totalElementOffset * W;
+        const finalAddress = B + byteOffset;
+
+        return {
+          dimension: '2D',
+          ordering: 'RMO',
+          baseAddress: B,
+          baseAddressHex: this.formatHex(B),
+          elementSize: W,
+          totalRows: R,
+          totalCols: C,
+          targetRow: i,
+          targetCol: j,
+          rowOffset,
+          colOffset,
+          elementsInPrecedingRows,
+          totalElementOffset,
+          byteOffset,
+          finalAddress,
+          finalAddressHex: this.formatHex(finalAddress),
+          formulaRaw: 'Address(A[i][j]) = Base + [ (i - LBR) × C + (j - LBC) ] × W',
+          steps: [
+            {
+              title: 'Step 1: Identify Parameters',
+              description: `Base = ${B} (${this.formatHex(B)}), Element Size W = ${W}B, Rows R = ${R}, Cols C = ${C}, Target = A[${i}][${j}]`
+            },
+            {
+              title: 'Step 2: Calculate Row Offset (Preceding Rows)',
+              description: `Preceding Rows = (i - LBR) = (${i} - ${LBR}) = ${rowOffset} row(s). Preceding Elements = ${rowOffset} × ${C} = ${elementsInPrecedingRows} elements`
+            },
+            {
+              title: 'Step 3: Add Column Offset (Preceding Elements in Target Row)',
+              description: `Preceding Cols = (j - LBC) = (${j} - ${LBC}) = ${colOffset} element(s). Total Element Offset = ${elementsInPrecedingRows} + ${colOffset} = ${totalElementOffset}`
+            },
+            {
+              title: 'Step 4: Compute Byte Offset',
+              description: `Byte Offset = Total Element Index × W = ${totalElementOffset} × ${W} = ${byteOffset} bytes`
+            },
+            {
+              title: 'Step 5: Compute Final Address',
+              description: `Final Address = Base + Byte Offset = ${B} + ${byteOffset} = ${finalAddress} (Decimal) = ${this.formatHex(finalAddress)} (Hex)`
+            }
+          ]
+        };
+      }
+
+      static calculate2DCMO({ baseAddress, elementSize, totalRows, totalCols, targetRow, targetCol, lowerBoundRow = 0, lowerBoundCol = 0 }) {
+        const B = this.parseBaseAddress(baseAddress);
+        const W = Number(elementSize) || 4;
+        const R = Number(totalRows) || 4;
+        const C = Number(totalCols) || 4;
+        const i = Number(targetRow) || 0;
+        const j = Number(targetCol) || 0;
+        const LBR = Number(lowerBoundRow) || 0;
+        const LBC = Number(lowerBoundCol) || 0;
+
+        const rowOffset = i - LBR;
+        const colOffset = j - LBC;
+        const elementsInPrecedingCols = colOffset * R;
+        const totalElementOffset = elementsInPrecedingCols + rowOffset;
+        const byteOffset = totalElementOffset * W;
+        const finalAddress = B + byteOffset;
+
+        return {
+          dimension: '2D',
+          ordering: 'CMO',
+          baseAddress: B,
+          baseAddressHex: this.formatHex(B),
+          elementSize: W,
+          totalRows: R,
+          totalCols: C,
+          targetRow: i,
+          targetCol: j,
+          rowOffset,
+          colOffset,
+          elementsInPrecedingCols,
+          totalElementOffset,
+          byteOffset,
+          finalAddress,
+          finalAddressHex: this.formatHex(finalAddress),
+          formulaRaw: 'Address(A[i][j]) = Base + [ (j - LBC) × R + (i - LBR) ] × W',
+          steps: [
+            {
+              title: 'Step 1: Identify Parameters',
+              description: `Base = ${B} (${this.formatHex(B)}), Element Size W = ${W}B, Rows R = ${R}, Cols C = ${C}, Target = A[${i}][${j}]`
+            },
+            {
+              title: 'Step 2: Calculate Column Offset (Preceding Columns)',
+              description: `Preceding Cols = (j - LBC) = (${j} - ${LBC}) = ${colOffset} column(s). Preceding Elements = ${colOffset} × ${R} = ${elementsInPrecedingCols} elements`
+            },
+            {
+              title: 'Step 3: Add Row Offset (Preceding Elements in Target Column)',
+              description: `Preceding Rows = (i - LBR) = (${i} - ${LBR}) = ${rowOffset} element(s). Total Element Offset = ${elementsInPrecedingCols} + ${rowOffset} = ${totalElementOffset}`
+            },
+            {
+              title: 'Step 4: Compute Byte Offset',
+              description: `Byte Offset = Total Element Index × W = ${totalElementOffset} × ${W} = ${byteOffset} bytes`
+            },
+            {
+              title: 'Step 5: Compute Final Address',
+              description: `Final Address = Base + Byte Offset = ${B} + ${byteOffset} = ${finalAddress} (Decimal) = ${this.formatHex(finalAddress)} (Hex)`
+            }
+          ]
+        };
+      }
+
+      static getCellAddress(config, r, c = 0) {
+        if (config.dimension === '1D') {
+          return this.calculate1D({
+            baseAddress: config.baseAddress,
+            elementSize: config.elementSize,
+            targetIndex: r,
+            lowerBound: config.lowerBoundRow || 0
+          });
+        } else {
+          if (config.ordering === 'CMO') {
+            return this.calculate2DCMO({
+              baseAddress: config.baseAddress,
+              elementSize: config.elementSize,
+              totalRows: config.totalRows,
+              totalCols: config.totalCols,
+              targetRow: r,
+              targetCol: c,
+              lowerBoundRow: config.lowerBoundRow || 0,
+              lowerBoundCol: config.lowerBoundCol || 0
+            });
+          } else {
+            return this.calculate2DRMO({
+              baseAddress: config.baseAddress,
+              elementSize: config.elementSize,
+              totalRows: config.totalRows,
+              totalCols: config.totalCols,
+              targetRow: r,
+              targetCol: c,
+              lowerBoundRow: config.lowerBoundRow || 0,
+              lowerBoundCol: config.lowerBoundCol || 0
+            });
+          }
+        }
+      }
+    }
+
+    /**
+     * 2. Array Operations Module (Search, Insert, Delete)
+     */
+    class ArrayOperations {
+      static runLinearSearch(arrayData, searchValue, config) {
+        const steps = [];
+        const targetVal = String(searchValue).trim();
+        let found = false;
+        let foundIndex = -1;
+
+        for (let i = 0; i < arrayData.length; i++) {
+          const item = arrayData[i];
+          const addressInfo = ArrayCalculator.getCellAddress(config, item.row, item.col);
+          const isMatch = String(item.value).trim() === targetVal;
+
+          steps.push({
+            stepIndex: i + 1,
+            type: 'INSPECT',
+            inspectRow: item.row,
+            inspectCol: item.col,
+            cellAddress: addressInfo.finalAddress,
+            cellAddressHex: addressInfo.finalAddressHex,
+            currentValue: item.value,
+            searchValue: targetVal,
+            isMatch,
+            log: `Step ${i + 1}: Inspecting [${config.dimension === '1D' ? item.row : item.row + ',' + item.col}] at Address ${addressInfo.finalAddressHex} (${addressInfo.finalAddress}). Value = "${item.value}" vs Target = "${targetVal}". ${isMatch ? 'MATCH FOUND! 🎉' : 'No match.'}`
+          });
+
+          if (isMatch) {
+            found = true;
+            foundIndex = i;
+            break;
+          }
+        }
+
+        if (!found) {
+          steps.push({
+            stepIndex: steps.length + 1,
+            type: 'NOT_FOUND',
+            log: `Search Complete: Target "${targetVal}" not found.`
+          });
+        }
+
+        return { found, foundIndex, totalSteps: steps.length, steps };
+      }
+
+      static runBinarySearch(arrayData, searchValue, config) {
+        const steps = [];
+        const targetVal = Number(searchValue);
+        let low = 0;
+        let high = arrayData.length - 1;
+        let found = false;
+        let foundIndex = -1;
+        let stepCount = 0;
+
+        while (low <= high) {
+          stepCount++;
+          const mid = Math.floor((low + high) / 2);
+          const item = arrayData[mid];
+          const addressInfo = ArrayCalculator.getCellAddress(config, item.row, item.col);
+          const midVal = Number(item.value);
+          const isMatch = midVal === targetVal;
+
+          steps.push({
+            stepIndex: stepCount,
+            type: 'INSPECT_MID',
+            low, high, mid,
+            inspectRow: item.row,
+            inspectCol: item.col,
+            cellAddress: addressInfo.finalAddress,
+            cellAddressHex: addressInfo.finalAddressHex,
+            midValue: midVal,
+            searchValue: targetVal,
+            isMatch,
+            log: `Step ${stepCount}: Low = ${low}, High = ${high} ➔ Mid = floor((${low} + ${high})/2) = ${mid}. Address ${addressInfo.finalAddressHex}. Mid Value = ${midVal} vs Target = ${targetVal}.`
+          });
+
+          if (isMatch) {
+            found = true;
+            foundIndex = mid;
+            steps[steps.length - 1].log += ` MATCH FOUND! 🎉`;
+            break;
+          } else if (midVal < targetVal) {
+            steps[steps.length - 1].log += ` (${midVal} < ${targetVal}) ➔ Search right half (low = ${mid + 1}).`;
+            low = mid + 1;
+          } else {
+            steps[steps.length - 1].log += ` (${midVal} > ${targetVal}) ➔ Search left half (high = ${mid - 1}).`;
+            high = mid - 1;
+          }
+        }
+
+        if (!found) {
+          steps.push({
+            stepIndex: stepCount + 1,
+            type: 'NOT_FOUND',
+            log: `Binary Search Complete: Target ${targetVal} not found.`
+          });
+        }
+
+        return { found, foundIndex, totalSteps: steps.length, steps };
+      }
+
+      static simulateInsertion(arrayData, insertIndex, newValue, config) {
+        const idx = Math.max(0, Math.min(insertIndex, arrayData.length));
+        const steps = [];
+        steps.push({ type: 'INIT_INSERT', log: `Initiating Insertion of "${newValue}" at index ${idx}.` });
+
+        for (let i = arrayData.length - 1; i >= idx; i--) {
+          const fromAddr = ArrayCalculator.getCellAddress(config, i);
+          const toAddr = ArrayCalculator.getCellAddress(config, i + 1);
+          steps.push({
+            type: 'SHIFT_RIGHT',
+            fromIndex: i, toIndex: i + 1,
+            log: `Shifting index ${i} (${fromAddr.finalAddressHex}) to index ${i + 1} (${toAddr.finalAddressHex}).`
+          });
+        }
+
+        const insertedAddr = ArrayCalculator.getCellAddress(config, idx);
+        steps.push({
+          type: 'PLACE_VALUE',
+          insertIndex: idx,
+          insertedAddressHex: insertedAddr.finalAddressHex,
+          newValue,
+          log: `Placed new value "${newValue}" at index ${idx} (Memory Address: ${insertedAddr.finalAddressHex}).`
+        });
+
+        return { steps, insertIndex: idx, insertedAddress: insertedAddr };
+      }
+
+      static simulateDeletion(arrayData, deleteIndex, config) {
+        const idx = Math.max(0, Math.min(deleteIndex, arrayData.length - 1));
+        const deletedItem = arrayData[idx];
+        const deletedAddr = ArrayCalculator.getCellAddress(config, idx);
+        const steps = [];
+
+        steps.push({
+          type: 'INIT_DELETE',
+          deleteIndex: idx,
+          log: `Deleting "${deletedItem ? deletedItem.value : ''}" at index ${idx} (${deletedAddr.finalAddressHex}).`
+        });
+
+        for (let i = idx; i < arrayData.length - 1; i++) {
+          const toAddr = ArrayCalculator.getCellAddress(config, i);
+          steps.push({
+            type: 'SHIFT_LEFT',
+            fromIndex: i + 1, toIndex: i,
+            log: `Shifting index ${i + 1} left into index ${i} (${toAddr.finalAddressHex}).`
+          });
+        }
+
+        steps.push({ type: 'COMPLETE_DELETE', log: `Deletion complete.` });
+        return { steps, deleteIndex: idx, deletedAddress: deletedAddr };
+      }
+    }
+
+    /**
+     * 3. Memory & Logical Grid Visualizer Module
+     */
+    class MemoryVisualizer {
+      constructor(gridContainerId, memoryStripContainerId, ramLayoutContainerId, onCellSelectCallback) {
+        this.gridContainer = document.getElementById(gridContainerId);
+        this.memoryStripContainer = document.getElementById(memoryStripContainerId);
+        this.ramLayoutContainer = document.getElementById(ramLayoutContainerId);
+        this.onCellSelect = onCellSelectCallback;
+        this.arrayData = [];
+      }
+
+      generateSampleData(config) {
+        const R = config.dimension === '1D' ? 1 : config.totalRows;
+        const C = config.dimension === '1D' ? config.totalRows : config.totalCols;
+        const data = [];
+        const sampleValues = [12, 25, 38, 42, 57, 63, 78, 84, 91, 105, 120, 145, 150, 165, 180, 195];
+
+        let valIdx = 0;
+        if (config.dimension === '1D') {
+          for (let i = 0; i < C; i++) {
+            data.push({ row: i, col: 0, value: sampleValues[i % sampleValues.length] });
+          }
+        } else {
+          for (let r = 0; r < R; r++) {
+            for (let c = 0; c < C; c++) {
+              data.push({ row: r, col: c, value: sampleValues[valIdx % sampleValues.length] });
+              valIdx++;
+            }
+          }
+        }
+        this.arrayData = data;
+        return data;
+      }
+
+      renderLogicalGrid(config, activeHighlights = {}) {
+        if (!this.gridContainer) return;
+        this.gridContainer.innerHTML = '';
+
+        const R = config.dimension === '1D' ? 1 : config.totalRows;
+        const C = config.dimension === '1D' ? config.totalRows : config.totalCols;
+        const is1D = config.dimension === '1D';
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'w-full overflow-x-auto p-4 flex flex-col items-center justify-center';
+
+        const gridTable = document.createElement('div');
+        gridTable.className = 'inline-grid gap-3 p-3 rounded-2xl bg-black/40 border border-white/10 shadow-2xl';
+        gridTable.style.gridTemplateColumns = is1D 
+          ? `repeat(${C}, minmax(95px, 1fr))` 
+          : `auto repeat(${C}, minmax(100px, 1fr))`;
+
+        if (!is1D) {
+          const originHeader = document.createElement('div');
+          originHeader.className = 'flex items-center justify-center text-xs font-mono font-bold text-slate-500 p-2 border-b border-r border-white/10';
+          originHeader.innerText = 'R \\ C';
+          gridTable.appendChild(originHeader);
+
+          for (let c = 0; c < C; c++) {
+            const colHeader = document.createElement('div');
+            colHeader.className = 'flex items-center justify-center text-xs font-mono font-bold text-cyan-400 p-2 border-b border-white/10';
+            colHeader.innerText = `C[${c}]`;
+            gridTable.appendChild(colHeader);
+          }
+        }
+
+        for (let r = 0; r < R; r++) {
+          if (!is1D) {
+            const rowHeader = document.createElement('div');
+            rowHeader.className = 'flex items-center justify-center text-xs font-mono font-bold text-purple-400 p-2 border-r border-white/10';
+            rowHeader.innerText = `R[${r}]`;
+            gridTable.appendChild(rowHeader);
+          }
+
+          for (let c = 0; c < C; c++) {
+            const item = this.arrayData.find(d => d.row === r && d.col === c) || { row: r, col: c, value: 0 };
+            const addressInfo = ArrayCalculator.getCellAddress(config, r, c);
+            
+            const cell = document.createElement('div');
+            cell.className = 'grid-cell p-3 flex flex-col items-center justify-between min-h-[95px] select-none';
+            cell.title = `Cell A[${is1D ? r : r + ',' + c}]\nAddress: ${addressInfo.finalAddressHex} (${addressInfo.finalAddress})`;
+
+            const isTarget = is1D ? (r === config.targetIndex) : (r === config.targetRow && c === config.targetCol);
+            const isBase = (r === 0 && c === 0);
+
+            if (isTarget) cell.classList.add('target-cell');
+            if (isBase) cell.classList.add('base-cell');
+
+            if (activeHighlights.inspectRow === r && activeHighlights.inspectCol === c) cell.classList.add('active-inspect');
+            if (activeHighlights.foundRow === r && activeHighlights.foundCol === c) cell.classList.add('found-cell');
+            if (activeHighlights.insertedRow === r && activeHighlights.insertedCol === c) cell.classList.add('inserted-cell');
+            if (activeHighlights.shiftingRow === r && activeHighlights.shiftingCol === c) cell.classList.add('shifting-cell');
+            if (activeHighlights.lowMidHigh && is1D) {
+              if (r === activeHighlights.lowMidHigh.mid) cell.classList.add('active-inspect');
+              else if (r >= activeHighlights.lowMidHigh.low && r <= activeHighlights.lowMidHigh.high) cell.classList.add('low-high-range');
+            }
+
+            const indexTag = document.createElement('span');
+            indexTag.className = 'text-[11px] font-mono font-semibold text-slate-400 border-b border-white/10 w-full text-center pb-1';
+            indexTag.innerText = is1D ? `A[${r}]` : `A[${r}][${c}]`;
+
+            const valSpan = document.createElement('span');
+            valSpan.className = 'text-base font-bold text-slate-100 my-1 font-mono tracking-wide';
+            valSpan.innerText = item.value !== undefined ? item.value : '-';
+
+            const addrSpan = document.createElement('span');
+            addrSpan.className = 'text-[10px] font-mono font-semibold text-cyan-400 crystal-pill px-2 py-0.5';
+            addrSpan.innerText = addressInfo.finalAddressHex;
+
+            cell.appendChild(indexTag);
+            cell.appendChild(valSpan);
+            cell.appendChild(addrSpan);
+
+            cell.addEventListener('click', () => {
+              if (this.onCellSelect) this.onCellSelect(r, c);
+            });
+
+            gridTable.appendChild(cell);
+          }
+        }
+
+        wrapper.appendChild(gridTable);
+        this.gridContainer.appendChild(wrapper);
+
+        this.renderPhysicalMemoryStrip(config, activeHighlights);
+        this.renderPhysicalRamLayout(config, activeHighlights);
+      }
+
+      renderPhysicalMemoryStrip(config, activeHighlights = {}) {
+        if (!this.memoryStripContainer) return;
+        this.memoryStripContainer.innerHTML = '';
+
+        const is1D = config.dimension === '1D';
+        const isRMO = config.ordering === 'RMO';
+        const R = is1D ? 1 : config.totalRows;
+        const C = is1D ? config.totalRows : config.totalCols;
+
+        const contiguousList = [];
+        if (is1D) {
+          for (let r = 0; r < C; r++) contiguousList.push({ r, c: 0 });
+        } else if (isRMO) {
+          for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) contiguousList.push({ r, c });
+        } else {
+          for (let c = 0; c < C; c++) for (let r = 0; r < R; r++) contiguousList.push({ r, c });
+        }
+
+        const stripWrapper = document.createElement('div');
+        stripWrapper.className = 'w-full overflow-x-auto py-3 px-2 flex items-center gap-2';
+
+        contiguousList.forEach((item, idx) => {
+          const addressInfo = ArrayCalculator.getCellAddress(config, item.r, item.c);
+          const dataItem = this.arrayData.find(d => d.row === item.r && d.col === item.c) || { value: 0 };
+          
+          const block = document.createElement('div');
+          block.className = 'crystal-btn flex-shrink-0 flex flex-col items-center justify-between p-3 min-w-[95px] text-center cursor-pointer';
+          
+          const isTarget = is1D ? (item.r === config.targetIndex) : (item.r === config.targetRow && item.c === config.targetCol);
+          if (isTarget) block.classList.add('border-cyan-400', 'bg-cyan-500/20');
+
+          const byteStart = addressInfo.finalAddress;
+          const byteEnd = addressInfo.finalAddress + config.elementSize - 1;
+
+          block.innerHTML = `
+            <div class="text-[10px] font-mono text-slate-400">Byte ${byteStart}..${byteEnd}</div>
+            <div class="text-xs font-mono font-bold text-cyan-400 my-1">${addressInfo.finalAddressHex}</div>
+            <div class="text-sm font-bold text-slate-100 font-mono">${dataItem.value}</div>
+            <div class="text-[10px] font-mono text-purple-400 mt-1 font-semibold">${is1D ? `A[${item.r}]` : `A[${item.r}][${item.c}]`}</div>
+          `;
+
+          block.addEventListener('click', () => {
+            if (this.onCellSelect) this.onCellSelect(item.r, item.c);
+          });
+
+          stripWrapper.appendChild(block);
+
+          if (idx < contiguousList.length - 1) {
+            const arrow = document.createElement('div');
+            arrow.className = 'text-cyan-500/40 text-xs flex-shrink-0';
+            arrow.innerHTML = '➔';
+            stripWrapper.appendChild(arrow);
+          }
+        });
+
+        this.memoryStripContainer.appendChild(stripWrapper);
+      }
+
+      renderPhysicalRamLayout(config, activeHighlights = {}) {
+        if (!this.ramLayoutContainer) return;
+        this.ramLayoutContainer.innerHTML = '';
+
+        const baseAddr = ArrayCalculator.parseBaseAddress(config.baseAddress);
+        const W = config.elementSize;
+        const is1D = config.dimension === '1D';
+        const R = is1D ? 1 : config.totalRows;
+        const C = is1D ? config.totalRows : config.totalCols;
+        const totalElements = R * C;
+        const totalArrayBytes = totalElements * W;
+        const endArrayAddr = baseAddr + totalArrayBytes - 1;
+
+        const targetRow = is1D ? config.targetIndex : config.targetRow;
+        const targetCol = is1D ? 0 : config.targetCol;
+        const targetCalc = ArrayCalculator.getCellAddress(config, targetRow, targetCol);
+        const targetByteStart = targetCalc.finalAddress;
+        const targetByteEnd = targetByteStart + W - 1;
+
+        const ramShell = document.createElement('div');
+        ramShell.className = 'ram-stick-container p-5 flex flex-col gap-4 text-xs font-mono';
+
+        const ramHeader = document.createElement('div');
+        ramHeader.className = 'flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-3';
+        ramHeader.innerHTML = `
+          <div class="flex items-center gap-2">
+            <i class="fas fa-microchip text-cyan-400 text-lg"></i>
+            <div>
+              <span class="font-bold text-slate-100 tracking-wider">HARDWARE PHYSICAL RAM MODULE</span>
+              <span class="text-[11px] text-cyan-400 ml-2">[DDR5 DRAM • Bank Segment 0x${ArrayCalculator.formatHex(baseAddr - 16)}]</span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 text-[11px]">
+            <span class="crystal-pill px-2.5 py-1 text-emerald-400 font-semibold">
+              Base: ${ArrayCalculator.formatHex(baseAddr)}
+            </span>
+            <span class="crystal-pill px-2.5 py-1 text-purple-300 font-semibold">
+              Blocked: ${ArrayCalculator.formatHex(targetByteStart)}..${ArrayCalculator.formatHex(targetByteEnd)}
+            </span>
+            <span class="crystal-pill px-2.5 py-1 text-cyan-300 font-semibold">
+              Total Size: ${totalArrayBytes} Bytes
+            </span>
+          </div>
+        `;
+        ramShell.appendChild(ramHeader);
+
+        const ramGrid = document.createElement('div');
+        ramGrid.className = 'grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2.5 my-2';
+
+        for (let b = 4; b >= 1; b--) {
+          const addr = baseAddr - b * W;
+          const cell = document.createElement('div');
+          cell.className = 'ram-chip-block p-2 flex flex-col justify-between items-center h-[72px] opacity-50';
+          cell.innerHTML = `
+            <span class="text-[9px] text-slate-500">SYS_BUFF</span>
+            <span class="text-[10px] text-slate-400 font-bold">${ArrayCalculator.formatHex(addr)}</span>
+            <span class="text-[9px] text-slate-600">UNALLOCATED</span>
+          `;
+          ramGrid.appendChild(cell);
+        }
+
+        for (let i = 0; i < totalElements; i++) {
+          let r, c;
+          if (is1D) { r = i; c = 0; }
+          else if (config.ordering === 'RMO') { r = Math.floor(i / C); c = i % C; }
+          else { c = Math.floor(i / R); r = i % R; }
+
+          const addressInfo = ArrayCalculator.getCellAddress(config, r, c);
+          const isTargetCell = is1D ? (r === config.targetIndex) : (r === config.targetRow && c === config.targetCol);
+          const isBaseCell = (r === 0 && c === 0);
+          const item = this.arrayData.find(d => d.row === r && d.col === c) || { value: 0 };
+
+          const ramCell = document.createElement('div');
+          ramCell.className = 'ram-chip-block p-2.5 flex flex-col justify-between items-center h-[80px] rounded-xl border cursor-pointer transition-all';
+
+          if (isTargetCell) {
+            ramCell.classList.add('border-purple-400', 'bg-purple-950/70', 'shadow-lg', 'scale-105');
+            ramCell.innerHTML = `
+              <div class="w-full flex items-center justify-between text-[9px]">
+                <span class="text-purple-300 font-bold">BLOCKED</span>
+                <span class="text-purple-300 font-bold">${W}B</span>
+              </div>
+              <span class="text-xs font-bold text-white font-mono my-0.5">${addressInfo.finalAddressHex}</span>
+              <span class="text-[10px] text-purple-200 font-bold font-mono">Val: ${item.value}</span>
+              <span class="text-[9px] text-purple-300 font-semibold">${is1D ? `A[${r}]` : `A[${r}][${c}]`}</span>
+            `;
+          } else if (isBaseCell) {
+            ramCell.classList.add('border-emerald-400', 'bg-emerald-950/50');
+            ramCell.innerHTML = `
+              <div class="w-full flex items-center justify-between text-[9px]">
+                <span class="text-emerald-400 font-bold">BASE</span>
+                <span class="text-emerald-400 font-bold">${W}B</span>
+              </div>
+              <span class="text-xs font-bold text-emerald-300 font-mono my-0.5">${addressInfo.finalAddressHex}</span>
+              <span class="text-[10px] text-emerald-200 font-bold font-mono">Val: ${item.value}</span>
+              <span class="text-[9px] text-emerald-400 font-semibold">${is1D ? `A[${r}]` : `A[${r}][${c}]`}</span>
+            `;
+          } else {
+            ramCell.classList.add('border-white/10', 'hover:border-cyan-400');
+            ramCell.innerHTML = `
+              <div class="w-full flex items-center justify-between text-[9px]">
+                <span class="text-cyan-400 font-bold">ALLOC</span>
+                <span class="text-slate-400">${W}B</span>
+              </div>
+              <span class="text-xs font-bold text-cyan-300 font-mono my-0.5">${addressInfo.finalAddressHex}</span>
+              <span class="text-[10px] text-slate-300 font-bold font-mono">Val: ${item.value}</span>
+              <span class="text-[9px] text-slate-400 font-medium">${is1D ? `A[${r}]` : `A[${r}][${c}]`}</span>
+            `;
+          }
+
+          ramCell.addEventListener('click', () => {
+            if (this.onCellSelect) this.onCellSelect(r, c);
+          });
+
+          ramGrid.appendChild(ramCell);
+        }
+
+        for (let b = 1; b <= 4; b++) {
+          const addr = endArrayAddr + b * W;
+          const cell = document.createElement('div');
+          cell.className = 'ram-chip-block p-2 flex flex-col justify-between items-center h-[72px] opacity-50';
+          cell.innerHTML = `
+            <span class="text-[9px] text-slate-500">SYS_BUFF</span>
+            <span class="text-[10px] text-slate-400 font-bold">${ArrayCalculator.formatHex(addr)}</span>
+            <span class="text-[9px] text-slate-600">FREE RAM</span>
+          `;
+          ramGrid.appendChild(cell);
+        }
+
+        ramShell.appendChild(ramGrid);
+
+        const ramFooter = document.createElement('div');
+        ramFooter.className = 'flex items-center justify-between pt-3 border-t border-white/10 text-[11px] text-slate-400';
+        ramFooter.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-purple-400 animate-pulse"></span>
+            <span class="text-slate-200">Selected Target Cell <strong class="text-purple-400">${is1D ? `A[${targetRow}]` : `A[${targetRow}][${targetCol}]`}</strong> locks <strong>${W} Bytes</strong> in DRAM from <code class="text-purple-300 font-bold">${ArrayCalculator.formatHex(targetByteStart)}</code> to <code class="text-purple-300 font-bold">${ArrayCalculator.formatHex(targetByteEnd)}</code>.</span>
+          </div>
+          <div class="text-cyan-400 font-mono text-[10px] font-semibold">BUS: 64-BIT CONTIGUOUS</div>
+        `;
+        ramShell.appendChild(ramFooter);
+
+        this.ramLayoutContainer.appendChild(ramShell);
+      }
+    }
+
+    /**
+     * 4. Main Controller Logic
+     */
+    document.addEventListener('DOMContentLoaded', () => {
+      const state = {
+        dimension: '2D',
+        ordering: 'RMO',
+        baseAddress: '1000',
+        elementSize: 4,
+        totalRows: 4,
+        totalCols: 4,
+        targetRow: 2,
+        targetCol: 1,
+        targetIndex: 2,
+        lowerBoundRow: 0,
+        lowerBoundCol: 0,
+        activeTab: 'calc',
+        searchValue: '78',
+        insertValue: '99',
+        theme: 'crystal',
+        viewMode: 'all',
+        animation: { isPlaying: false, timer: null, currentStep: 0, totalSteps: 0, stepsData: [], speedMs: 800 }
+      };
+
+      const elDimension = document.getElementById('input-dimension');
+      const elOrdering = document.getElementById('input-ordering');
+      const elOrderingWrapper = document.getElementById('ordering-wrapper');
+      const elBaseAddress = document.getElementById('input-base-address');
+      const elElementSize = document.getElementById('input-element-size');
+      const elTotalRows = document.getElementById('input-total-rows');
+      const elTotalCols = document.getElementById('input-total-cols');
+      const elTotalColsWrapper = document.getElementById('total-cols-wrapper');
+      const elRowsLabel = document.getElementById('label-total-rows');
+      
+      const elTargetRow = document.getElementById('input-target-row');
+      const elTargetCol = document.getElementById('input-target-col');
+      const elTargetColWrapper = document.getElementById('target-col-wrapper');
+      const elTargetRowLabel = document.getElementById('label-target-row');
+
+      const elSearchValue = document.getElementById('input-search-value');
+      const elInsertValue = document.getElementById('input-insert-value');
+      const elOpValueWrapper = document.getElementById('op-value-wrapper');
+
+      const elResultDecimal = document.getElementById('result-decimal');
+      const elResultHex = document.getElementById('result-hex');
+      const elResultOffset = document.getElementById('result-offset');
+      const elFormulaRaw = document.getElementById('formula-raw');
+      const elStepsContainer = document.getElementById('calculation-steps-container');
+      const elOperationLogs = document.getElementById('operation-logs-container');
+
+      const cardMatrix = document.getElementById('card-matrix');
+      const cardRam = document.getElementById('ram-layout-container');
+      const cardStrip = document.getElementById('card-strip');
+
+      const elBtnPlay = document.getElementById('btn-play');
+      const elBtnPrev = document.getElementById('btn-prev');
+      const elBtnNext = document.getElementById('btn-next');
+      const elBtnReset = document.getElementById('btn-reset');
+      const elSpeedSlider = document.getElementById('speed-slider');
+      const elSpeedValue = document.getElementById('speed-value');
+      const elStepIndicator = document.getElementById('step-indicator');
+
+      const elPresetSelect = document.getElementById('preset-select');
+      const elThemeSelect = document.getElementById('theme-select');
+      const viewModeButtons = document.querySelectorAll('.view-mode-btn');
+
+      const visualizer = new MemoryVisualizer('grid-visualizer-container', 'memory-strip-container', 'ram-layout-container', (r, c) => {
+        if (state.dimension === '1D') {
+          state.targetIndex = r;
+          elTargetRow.value = r;
+        } else {
+          state.targetRow = r;
+          state.targetCol = c;
+          elTargetRow.value = r;
+          elTargetCol.value = c;
+        }
+        recalculateAll();
+      });
+
+      visualizer.generateSampleData(state);
+
+      function applyTheme(themeName) {
+        state.theme = themeName;
+        document.documentElement.setAttribute('data-theme', themeName);
+        if (elThemeSelect) elThemeSelect.value = themeName;
+      }
+
+      function applyViewMode(mode) {
+        state.viewMode = mode;
+        viewModeButtons.forEach(btn => {
+          if (btn.dataset.mode === mode) btn.classList.add('bg-cyan-500/20', 'border-cyan-400', 'text-cyan-300');
+          else btn.classList.remove('bg-cyan-500/20', 'border-cyan-400', 'text-cyan-300');
+        });
+
+        if (mode === 'all') {
+          if (cardMatrix) cardMatrix.classList.remove('hidden');
+          if (cardRam) cardRam.classList.remove('hidden');
+          if (cardStrip) cardStrip.classList.remove('hidden');
+        } else if (mode === 'matrix') {
+          if (cardMatrix) cardMatrix.classList.remove('hidden');
+          if (cardRam) cardRam.classList.add('hidden');
+          if (cardStrip) cardStrip.classList.add('hidden');
+        } else if (mode === 'ram') {
+          if (cardMatrix) cardMatrix.classList.add('hidden');
+          if (cardRam) cardRam.classList.remove('hidden');
+          if (cardStrip) cardStrip.classList.add('hidden');
+        } else if (mode === 'strip') {
+          if (cardMatrix) cardMatrix.classList.add('hidden');
+          if (cardRam) cardRam.classList.add('hidden');
+          if (cardStrip) cardStrip.classList.remove('hidden');
+        }
+      }
+
+      function syncInputsFromState() {
+        elDimension.value = state.dimension;
+        elOrdering.value = state.ordering;
+        elBaseAddress.value = state.baseAddress;
+        elElementSize.value = state.elementSize;
+        elTotalRows.value = state.totalRows;
+        elTotalCols.value = state.totalCols;
+
+        if (state.dimension === '1D') {
+          elOrderingWrapper.classList.add('hidden');
+          elTotalColsWrapper.classList.add('hidden');
+          elTargetColWrapper.classList.add('hidden');
+          elRowsLabel.innerText = 'Array Size (N)';
+          elTargetRowLabel.innerText = 'Target Index (i)';
+          elTargetRow.value = state.targetIndex;
+        } else {
+          elOrderingWrapper.classList.remove('hidden');
+          elTotalColsWrapper.classList.remove('hidden');
+          elTargetColWrapper.classList.remove('hidden');
+          elRowsLabel.innerText = 'Total Rows (R)';
+          elTargetRowLabel.innerText = 'Target Row (i)';
+          elTargetRow.value = state.targetRow;
+          elTargetCol.value = state.targetCol;
+        }
+
+        if (elSearchValue) elSearchValue.value = state.searchValue;
+        if (elInsertValue) elInsertValue.value = state.insertValue;
+      }
+
+      function readStateFromInputs() {
+        state.dimension = elDimension.value;
+        state.ordering = elOrdering.value;
+        state.baseAddress = elBaseAddress.value;
+        state.elementSize = Number(elElementSize.value) || 4;
+        state.totalRows = Math.max(1, Number(elTotalRows.value) || 1);
+        state.totalCols = Math.max(1, Number(elTotalCols.value) || 1);
+
+        if (state.dimension === '1D') {
+          state.targetIndex = Math.max(0, Math.min(Number(elTargetRow.value) || 0, state.totalRows - 1));
+        } else {
+          state.targetRow = Math.max(0, Math.min(Number(elTargetRow.value) || 0, state.totalRows - 1));
+          state.targetCol = Math.max(0, Math.min(Number(elTargetCol.value) || 0, state.totalCols - 1));
+        }
+
+        if (elSearchValue) state.searchValue = elSearchValue.value;
+        if (elInsertValue) state.insertValue = elInsertValue.value;
+      }
+
+      function recalculateAll(activeHighlights = {}) {
+        readStateFromInputs();
+        syncInputsFromState();
+
+        let calcResult;
+        if (state.dimension === '1D') {
+          calcResult = ArrayCalculator.calculate1D({
+            baseAddress: state.baseAddress,
+            elementSize: state.elementSize,
+            targetIndex: state.targetIndex,
+            lowerBound: state.lowerBoundRow
+          });
+        } else if (state.ordering === 'CMO') {
+          calcResult = ArrayCalculator.calculate2DCMO({
+            baseAddress: state.baseAddress,
+            elementSize: state.elementSize,
+            totalRows: state.totalRows,
+            totalCols: state.totalCols,
+            targetRow: state.targetRow,
+            targetCol: state.targetCol,
+            lowerBoundRow: state.lowerBoundRow,
+            lowerBoundCol: state.lowerBoundCol
+          });
+        } else {
+          calcResult = ArrayCalculator.calculate2DRMO({
+            baseAddress: state.baseAddress,
+            elementSize: state.elementSize,
+            totalRows: state.totalRows,
+            totalCols: state.totalCols,
+            targetRow: state.targetRow,
+            targetCol: state.targetCol,
+            lowerBoundRow: state.lowerBoundRow,
+            lowerBoundCol: state.lowerBoundCol
+          });
+        }
+
+        if (elResultDecimal) elResultDecimal.innerText = `${calcResult.finalAddress}`;
+        if (elResultHex) elResultHex.innerText = `${calcResult.finalAddressHex}`;
+        if (elResultOffset) elResultOffset.innerText = `+${calcResult.byteOffset} Bytes (${calcResult.totalElementOffset !== undefined ? calcResult.totalElementOffset : calcResult.relativeIndex} elements offset)`;
+        if (elFormulaRaw) elFormulaRaw.innerText = calcResult.formulaRaw;
+
+        if (elStepsContainer) {
+          elStepsContainer.innerHTML = '';
+          calcResult.steps.forEach(step => {
+            const stepCard = document.createElement('div');
+            stepCard.className = 'crystal-btn p-3 text-left flex flex-col gap-1 transition-all';
+            stepCard.innerHTML = `
+              <div class="text-xs font-bold text-cyan-400 font-mono">${step.title}</div>
+              <div class="text-xs font-mono text-slate-200 leading-relaxed">${step.description}</div>
+            `;
+            elStepsContainer.appendChild(stepCard);
+          });
+        }
+
+        visualizer.renderLogicalGrid(state, activeHighlights);
+      }
+
+      function runOperation() {
+        pauseAnimation();
+        state.animation.currentStep = 0;
+        state.animation.stepsData = [];
+
+        const tab = state.activeTab;
+        if (tab === 'calc') {
+          recalculateAll();
+          renderOperationLogs(['Address calculation mode active. Click any cell to recalculate.']);
+          return;
+        }
+
+        let opResult;
+        if (tab === 'linear') {
+          opResult = ArrayOperations.runLinearSearch(visualizer.arrayData, state.searchValue, state);
+          state.animation.stepsData = opResult.steps;
+        } else if (tab === 'binary') {
+          if (state.dimension !== '1D') {
+            renderOperationLogs(['⚠️ Binary Search requires a 1D sorted array. Auto-switching to 1D mode.']);
+            state.dimension = '1D';
+            elDimension.value = '1D';
+            readStateFromInputs();
+            visualizer.generateSampleData(state);
+          }
+          visualizer.arrayData.sort((a, b) => Number(a.value) - Number(b.value));
+          opResult = ArrayOperations.runBinarySearch(visualizer.arrayData, state.searchValue, state);
+          state.animation.stepsData = opResult.steps;
+        } else if (tab === 'insert') {
+          opResult = ArrayOperations.simulateInsertion(visualizer.arrayData, state.targetIndex, state.insertValue, state);
+          state.animation.stepsData = opResult.steps;
+        } else if (tab === 'delete') {
+          opResult = ArrayOperations.simulateDeletion(visualizer.arrayData, state.targetIndex, state);
+          state.animation.stepsData = opResult.steps;
+        }
+
+        state.animation.totalSteps = state.animation.stepsData.length;
+        applyAnimationStep(0);
+        playAnimation();
+      }
+
+      function applyAnimationStep(stepIdx) {
+        if (!state.animation.stepsData || state.animation.stepsData.length === 0) return;
+        stepIdx = Math.max(0, Math.min(stepIdx, state.animation.stepsData.length - 1));
+        state.animation.currentStep = stepIdx;
+
+        const frame = state.animation.stepsData[stepIdx];
+        const highlights = {};
+
+        if (frame.type === 'INSPECT') {
+          highlights.inspectRow = frame.inspectRow;
+          highlights.inspectCol = frame.inspectCol;
+          if (frame.isMatch) { highlights.foundRow = frame.inspectRow; highlights.foundCol = frame.inspectCol; }
+        } else if (frame.type === 'INSPECT_MID') {
+          highlights.inspectRow = frame.inspectRow;
+          highlights.inspectCol = frame.inspectCol;
+          highlights.lowMidHigh = { low: frame.low, mid: frame.mid, high: frame.high };
+          if (frame.isMatch) { highlights.foundRow = frame.inspectRow; highlights.foundCol = frame.inspectCol; }
+        } else if (frame.type === 'SHIFT_RIGHT' || frame.type === 'SHIFT_LEFT') {
+          highlights.shiftingRow = frame.fromIndex;
+          highlights.shiftingCol = 0;
+        } else if (frame.type === 'PLACE_VALUE') {
+          highlights.insertedRow = frame.insertIndex;
+          highlights.insertedCol = 0;
+        }
+
+        recalculateAll(highlights);
+
+        const logsToDisplay = state.animation.stepsData.slice(0, stepIdx + 1).map(s => s.log);
+        renderOperationLogs(logsToDisplay);
+
+        if (elStepIndicator) elStepIndicator.innerText = `Step ${stepIdx + 1} of ${state.animation.totalSteps}`;
+      }
+
+      function playAnimation() {
+        if (state.animation.isPlaying) return;
+        if (state.animation.currentStep >= state.animation.totalSteps - 1) state.animation.currentStep = 0;
+        state.animation.isPlaying = true;
+        if (elBtnPlay) elBtnPlay.innerHTML = '<i class="fas fa-pause mr-1"></i> Pause';
+
+        state.animation.timer = setInterval(() => {
+          if (state.animation.currentStep < state.animation.totalSteps - 1) {
+            applyAnimationStep(state.animation.currentStep + 1);
+          } else {
+            pauseAnimation();
+          }
+        }, state.animation.speedMs);
+      }
+
+      function pauseAnimation() {
+        state.animation.isPlaying = false;
+        if (state.animation.timer) {
+          clearInterval(state.animation.timer);
+          state.animation.timer = null;
+        }
+        if (elBtnPlay) elBtnPlay.innerHTML = '<i class="fas fa-play mr-1"></i> Play';
+      }
+
+      function renderOperationLogs(logsArray) {
+        if (!elOperationLogs) return;
+        elOperationLogs.innerHTML = '';
+        logsArray.forEach(msg => {
+          const logEntry = document.createElement('div');
+          logEntry.className = 'text-xs font-mono py-1 px-2.5 rounded bg-black/40 text-cyan-300 border-l-2 border-cyan-400 mb-1';
+          logEntry.innerText = msg;
+          elOperationLogs.appendChild(logEntry);
+        });
+        elOperationLogs.scrollTop = elOperationLogs.scrollHeight;
+      }
+
+      [elDimension, elOrdering, elBaseAddress, elElementSize, elTotalRows, elTotalCols, elTargetRow, elTargetCol, elSearchValue, elInsertValue].forEach(el => {
+        if (el) {
+          el.addEventListener('input', () => {
+            readStateFromInputs();
+            if (el === elDimension || el === elTotalRows || el === elTotalCols) {
+              visualizer.generateSampleData(state);
+            }
+            recalculateAll();
+          });
+        }
+      });
+
+      viewModeButtons.forEach(btn => {
+        btn.addEventListener('click', () => applyViewMode(btn.dataset.mode));
+      });
+
+      const tabButtons = document.querySelectorAll('.op-tab-btn');
+      tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          tabButtons.forEach(b => b.classList.remove('bg-cyan-500', 'text-slate-950', 'font-bold'));
+          tabButtons.forEach(b => b.classList.add('text-slate-300'));
+
+          btn.classList.remove('text-slate-300');
+          btn.classList.add('bg-cyan-500', 'text-slate-950', 'font-bold');
+
+          state.activeTab = btn.dataset.tab;
+          
+          if (state.activeTab === 'linear' || state.activeTab === 'binary') {
+            elOpValueWrapper.classList.remove('hidden');
+            document.getElementById('op-value-label').innerText = 'Search Target Value';
+          } else if (state.activeTab === 'insert') {
+            elOpValueWrapper.classList.remove('hidden');
+            document.getElementById('op-value-label').innerText = 'Insert Value';
+          } else {
+            elOpValueWrapper.classList.add('hidden');
+          }
+
+          runOperation();
+        });
+      });
+
+      if (elBtnPlay) elBtnPlay.addEventListener('click', () => state.animation.isPlaying ? pauseAnimation() : playAnimation());
+      if (elBtnNext) elBtnNext.addEventListener('click', () => { pauseAnimation(); applyAnimationStep(state.animation.currentStep + 1); });
+      if (elBtnPrev) elBtnPrev.addEventListener('click', () => { pauseAnimation(); applyAnimationStep(state.animation.currentStep - 1); });
+      if (elBtnReset) elBtnReset.addEventListener('click', () => { pauseAnimation(); applyAnimationStep(0); });
+
+      if (elSpeedSlider) {
+        elSpeedSlider.addEventListener('input', (e) => {
+          state.animation.speedMs = 2100 - Number(e.target.value);
+          if (elSpeedValue) elSpeedValue.innerText = `${(state.animation.speedMs / 1000).toFixed(1)}s`;
+          if (state.animation.isPlaying) {
+            pauseAnimation();
+            playAnimation();
+          }
+        });
+      }
+
+      if (elPresetSelect) {
+        elPresetSelect.addEventListener('change', (e) => {
+          const preset = e.target.value;
+          if (preset === '1d-int') {
+            state.dimension = '1D'; state.baseAddress = '1000'; state.elementSize = 4; state.totalRows = 8; state.targetIndex = 3;
+          } else if (preset === '2d-rmo') {
+            state.dimension = '2D'; state.ordering = 'RMO'; state.baseAddress = '0x1000'; state.elementSize = 4; state.totalRows = 4; state.totalCols = 4; state.targetRow = 2; state.targetCol = 1;
+          } else if (preset === '2d-cmo') {
+            state.dimension = '2D'; state.ordering = 'CMO'; state.baseAddress = '2000'; state.elementSize = 8; state.totalRows = 3; state.totalCols = 5; state.targetRow = 1; state.targetCol = 4;
+          } else if (preset === 'char-1d') {
+            state.dimension = '1D'; state.baseAddress = '5000'; state.elementSize = 1; state.totalRows = 10; state.targetIndex = 5;
+          }
+          syncInputsFromState();
+          visualizer.generateSampleData(state);
+          recalculateAll();
+        });
+      }
+
+      if (elThemeSelect) {
+        elThemeSelect.addEventListener('change', (e) => applyTheme(e.target.value));
+      }
+
+      applyTheme('crystal');
+      applyViewMode('all');
+      recalculateAll();
+      renderOperationLogs(['Single-file Web App ready. All styles and scripts loaded inline.']);
+    });
+  </script>
 </body>
 </html>
