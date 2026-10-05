@@ -110,7 +110,6 @@
       overflow-x: hidden;
     }
 
-    /* Animated Cyberpunk Circuit Grids in Background */
     body::before {
       content: '';
       position: fixed;
@@ -230,7 +229,6 @@
       animation: pulse-found 0.7s ease-in-out;
     }
 
-    /* HARDWARE DRAM MODULE REALISTIC STYLING */
     .ram-stick-container {
       background: linear-gradient(135deg, rgba(8, 14, 28, 0.95) 0%, rgba(4, 7, 14, 0.98) 100%);
       border: 1px solid var(--border-color);
@@ -260,7 +258,6 @@
       box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
     }
 
-    /* RAM PCB Gold Pins */
     .ram-gold-pins {
       height: 8px;
       background: repeating-linear-gradient(90deg, #f59e0b 0px, #f59e0b 4px, transparent 4px, transparent 8px);
@@ -268,7 +265,6 @@
       opacity: 0.8;
     }
 
-    /* Custom Scrollbars */
     ::-webkit-scrollbar {
       width: 6px; height: 6px;
     }
@@ -280,7 +276,6 @@
       border-radius: 3px;
     }
 
-    /* Animations */
     @keyframes pulse-inspect {
       0% { transform: scale(1); }
       100% { transform: scale(1.05); }
@@ -309,7 +304,7 @@
 </head>
 <body class="min-h-screen flex flex-col font-sans transition-colors duration-500">
 
-  <!-- Header Navbar with Creative DSA Visualizer Branding -->
+  <!-- Header Navbar -->
   <header class="sticky top-0 z-50 p-3">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 rounded-2xl crystal-card flex flex-wrap items-center justify-between gap-4">
       
@@ -330,10 +325,9 @@
         </div>
       </div>
 
-      <!-- Header Controls: Quick Presets & Multi-Theme Selector -->
+      <!-- Presets & Multi-Theme Selector -->
       <div class="flex flex-wrap items-center gap-3">
         
-        <!-- Presets Selector -->
         <div class="flex items-center gap-1.5 crystal-pill px-3 py-1.5">
           <i class="fas fa-bolt text-amber-400 text-xs"></i>
           <select id="preset-select" class="bg-transparent text-slate-200 text-xs font-semibold focus:outline-none cursor-pointer font-mono">
@@ -344,7 +338,6 @@
           </select>
         </div>
 
-        <!-- Multi-Theme Dropdown Selector Button -->
         <div class="flex items-center gap-1.5 crystal-pill px-3 py-1.5">
           <i class="fas fa-palette text-cyan-400 text-xs"></i>
           <select id="theme-select" class="bg-transparent text-cyan-300 text-xs font-bold focus:outline-none cursor-pointer font-mono">
@@ -360,7 +353,35 @@
   </header>
 
   <!-- Main Container -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-6">
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-5">
+
+    <!-- NEW PROMINENT TOP INTERACTIVE OPERATION BUTTONS TOOLBAR -->
+    <section class="crystal-card p-4 shadow-2xl">
+      <div class="flex items-center justify-between flex-wrap gap-3 mb-3 pb-2 border-b border-white/10">
+        <div class="text-xs font-mono font-bold text-cyan-400 uppercase tracking-widest flex items-center gap-2">
+          <i class="fas fa-play-circle text-cyan-400"></i> SELECT OPERATION TO SWITCH MODE & ANIMATE
+        </div>
+        <span class="text-xs text-slate-400 font-mono italic">Click any button to switch DSA algorithm mode</span>
+      </div>
+
+      <div class="flex items-center justify-between gap-2 overflow-x-auto py-1 font-mono text-xs">
+        <button data-tab="calc" class="op-tab-btn crystal-pill px-4 py-2.5 font-bold flex-1 flex items-center justify-center gap-2 bg-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/30 transition-all">
+          <i class="fas fa-calculator text-sm"></i> Address Calculation
+        </button>
+        <button data-tab="insert" class="op-tab-btn crystal-pill px-4 py-2.5 font-bold flex-1 flex items-center justify-center gap-2 text-slate-300 hover:text-white transition-all">
+          <i class="fas fa-plus-circle text-emerald-400 text-sm"></i> Insertion
+        </button>
+        <button data-tab="delete" class="op-tab-btn crystal-pill px-4 py-2.5 font-bold flex-1 flex items-center justify-center gap-2 text-slate-300 hover:text-white transition-all">
+          <i class="fas fa-minus-circle text-rose-400 text-sm"></i> Deletion
+        </button>
+        <button data-tab="linear" class="op-tab-btn crystal-pill px-4 py-2.5 font-bold flex-1 flex items-center justify-center gap-2 text-slate-300 hover:text-white transition-all">
+          <i class="fas fa-search text-amber-400 text-sm"></i> Linear Search
+        </button>
+        <button data-tab="binary" class="op-tab-btn crystal-pill px-4 py-2.5 font-bold flex-1 flex items-center justify-center gap-2 text-slate-300 hover:text-white transition-all">
+          <i class="fas fa-layer-group text-purple-400 text-sm"></i> Binary Search
+        </button>
+      </div>
+    </section>
 
     <!-- View Mode Switcher Toolbar (All, Logical Matrix, Hardware RAM, Contiguous Strip) -->
     <section class="flex items-center justify-between flex-wrap gap-3">
@@ -395,7 +416,6 @@
 
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 text-xs font-mono">
         
-        <!-- Dimension -->
         <div>
           <label class="block font-semibold text-slate-400 mb-1">Dimension</label>
           <select id="input-dimension" class="w-full crystal-pill p-2 text-cyan-300 font-bold focus:outline-none">
@@ -404,7 +424,6 @@
           </select>
         </div>
 
-        <!-- Row/Col Major Order -->
         <div id="ordering-wrapper">
           <label class="block font-semibold text-slate-400 mb-1">Mapping Order</label>
           <select id="input-ordering" class="w-full crystal-pill p-2 text-purple-300 font-bold focus:outline-none">
@@ -413,13 +432,11 @@
           </select>
         </div>
 
-        <!-- Base Address -->
         <div>
           <label class="block font-semibold text-slate-400 mb-1">Base Address (B)</label>
           <input type="text" id="input-base-address" value="1000" class="w-full crystal-pill p-2 text-emerald-400 font-bold focus:outline-none">
         </div>
 
-        <!-- Element Size -->
         <div>
           <label class="block font-semibold text-slate-400 mb-1">Element Size (W)</label>
           <select id="input-element-size" class="w-full crystal-pill p-2 text-cyan-300 font-bold focus:outline-none">
@@ -430,31 +447,26 @@
           </select>
         </div>
 
-        <!-- Total Rows / Size -->
         <div>
           <label id="label-total-rows" class="block font-semibold text-slate-400 mb-1">Total Rows (R)</label>
           <input type="number" id="input-total-rows" value="4" min="1" max="12" class="w-full crystal-pill p-2 font-bold text-slate-200 focus:outline-none">
         </div>
 
-        <!-- Total Columns -->
         <div id="total-cols-wrapper">
           <label class="block font-semibold text-slate-400 mb-1">Total Columns (C)</label>
           <input type="number" id="input-total-cols" value="4" min="1" max="12" class="w-full crystal-pill p-2 font-bold text-slate-200 focus:outline-none">
         </div>
 
-        <!-- Target Row / Index -->
         <div>
           <label id="label-target-row" class="block font-semibold text-slate-400 mb-1">Target Row (i)</label>
           <input type="number" id="input-target-row" value="2" min="0" class="w-full crystal-pill p-2 font-bold text-purple-400 focus:outline-none">
         </div>
 
-        <!-- Target Column -->
         <div id="target-col-wrapper">
           <label class="block font-semibold text-slate-400 mb-1">Target Col (j)</label>
           <input type="number" id="input-target-col" value="1" min="0" class="w-full crystal-pill p-2 font-bold text-purple-400 focus:outline-none">
         </div>
 
-        <!-- Search/Insert Value -->
         <div id="op-value-wrapper" class="hidden col-span-2">
           <label id="op-value-label" class="block font-semibold text-slate-400 mb-1">Operation Value</label>
           <input type="text" id="input-search-value" value="78" class="w-full crystal-pill p-2 font-bold text-amber-400 focus:outline-none">
@@ -489,7 +501,6 @@
             </div>
           </div>
 
-          <!-- Dynamic Grid Container -->
           <div id="grid-visualizer-container" class="flex-1 flex items-center justify-center min-h-[300px]"></div>
         </section>
 
@@ -502,7 +513,6 @@
             <span class="text-xs font-mono text-emerald-400 crystal-pill px-2.5 py-0.5 font-bold">Sequential Allocation</span>
           </div>
 
-          <!-- Dynamic Memory Strip Container -->
           <div id="memory-strip-container" class="w-full"></div>
         </section>
 
@@ -524,27 +534,8 @@
           </div>
         </section>
 
-        <!-- Operation Tabs & Stepper -->
+        <!-- Operation Controls & Stepper -->
         <section class="crystal-card p-5 shadow-xl flex flex-col gap-4">
-
-          <!-- Tabs -->
-          <div class="grid grid-cols-5 gap-1.5 p-1.5 crystal-pill text-xs font-mono">
-            <button data-tab="calc" class="op-tab-btn crystal-btn py-2 px-1 bg-cyan-500 text-slate-950 font-bold text-center">
-              <i class="fas fa-calculator block text-sm mb-0.5"></i> Address
-            </button>
-            <button data-tab="insert" class="op-tab-btn crystal-btn py-2 px-1 text-slate-300 text-center">
-              <i class="fas fa-plus block text-sm mb-0.5"></i> Insert
-            </button>
-            <button data-tab="delete" class="op-tab-btn crystal-btn py-2 px-1 text-slate-300 text-center">
-              <i class="fas fa-trash block text-sm mb-0.5"></i> Delete
-            </button>
-            <button data-tab="linear" class="op-tab-btn crystal-btn py-2 px-1 text-slate-300 text-center">
-              <i class="fas fa-search block text-sm mb-0.5"></i> Linear
-            </button>
-            <button data-tab="binary" class="op-tab-btn crystal-btn py-2 px-1 text-slate-300 text-center">
-              <i class="fas fa-layer-group block text-sm mb-0.5"></i> Binary
-            </button>
-          </div>
 
           <!-- Step Player Bar -->
           <div class="flex items-center justify-between gap-3 p-3 crystal-pill">
@@ -649,22 +640,10 @@
           finalAddressHex: this.formatHex(finalAddress),
           formulaRaw: 'Address(A[i]) = Base + (i - LB) × W',
           steps: [
-            {
-              title: 'Step 1: Identify Parameters',
-              description: `Base Address = ${B} (${this.formatHex(B)}), Element Size (W) = ${W}B, Target Index (i) = ${i}, LB = ${LB}`
-            },
-            {
-              title: 'Step 2: Calculate Relative Index Offset',
-              description: `Index Offset = (i - LB) = (${i} - ${LB}) = ${relativeIndex} elements`
-            },
-            {
-              title: 'Step 3: Calculate Memory Byte Offset',
-              description: `Byte Offset = Offset × W = ${relativeIndex} × ${W} = ${byteOffset} bytes`
-            },
-            {
-              title: 'Step 4: Add Byte Offset to Base Address',
-              description: `Final Address = Base + Byte Offset = ${B} + ${byteOffset} = ${finalAddress} (Decimal) = ${this.formatHex(finalAddress)} (Hex)`
-            }
+            { title: 'Step 1: Identify Parameters', description: `Base Address = ${B} (${this.formatHex(B)}), Element Size (W) = ${W}B, Target Index (i) = ${i}, LB = ${LB}` },
+            { title: 'Step 2: Calculate Relative Index Offset', description: `Index Offset = (i - LB) = (${i} - ${LB}) = ${relativeIndex} elements` },
+            { title: 'Step 3: Calculate Memory Byte Offset', description: `Byte Offset = Offset × W = ${relativeIndex} × ${W} = ${byteOffset} bytes` },
+            { title: 'Step 4: Add Byte Offset to Base Address', description: `Final Address = Base + Byte Offset = ${B} + ${byteOffset} = ${finalAddress} (Decimal) = ${this.formatHex(finalAddress)} (Hex)` }
           ]
         };
       }
@@ -705,26 +684,11 @@
           finalAddressHex: this.formatHex(finalAddress),
           formulaRaw: 'Address(A[i][j]) = Base + [ (i - LBR) × C + (j - LBC) ] × W',
           steps: [
-            {
-              title: 'Step 1: Identify Parameters',
-              description: `Base = ${B} (${this.formatHex(B)}), Element Size W = ${W}B, Rows R = ${R}, Cols C = ${C}, Target = A[${i}][${j}]`
-            },
-            {
-              title: 'Step 2: Calculate Row Offset (Preceding Rows)',
-              description: `Preceding Rows = (i - LBR) = (${i} - ${LBR}) = ${rowOffset} row(s). Preceding Elements = ${rowOffset} × ${C} = ${elementsInPrecedingRows} elements`
-            },
-            {
-              title: 'Step 3: Add Column Offset (Preceding Elements in Target Row)',
-              description: `Preceding Cols = (j - LBC) = (${j} - ${LBC}) = ${colOffset} element(s). Total Element Offset = ${elementsInPrecedingRows} + ${colOffset} = ${totalElementOffset}`
-            },
-            {
-              title: 'Step 4: Compute Byte Offset',
-              description: `Byte Offset = Total Element Index × W = ${totalElementOffset} × ${W} = ${byteOffset} bytes`
-            },
-            {
-              title: 'Step 5: Compute Final Address',
-              description: `Final Address = Base + Byte Offset = ${B} + ${byteOffset} = ${finalAddress} (Decimal) = ${this.formatHex(finalAddress)} (Hex)`
-            }
+            { title: 'Step 1: Identify Parameters', description: `Base = ${B} (${this.formatHex(B)}), Element Size W = ${W}B, Rows R = ${R}, Cols C = ${C}, Target = A[${i}][${j}]` },
+            { title: 'Step 2: Calculate Row Offset (Preceding Rows)', description: `Preceding Rows = (i - LBR) = (${i} - ${LBR}) = ${rowOffset} row(s). Preceding Elements = ${rowOffset} × ${C} = ${elementsInPrecedingRows} elements` },
+            { title: 'Step 3: Add Column Offset (Preceding Elements in Target Row)', description: `Preceding Cols = (j - LBC) = (${j} - ${LBC}) = ${colOffset} element(s). Total Element Offset = ${elementsInPrecedingRows} + ${colOffset} = ${totalElementOffset}` },
+            { title: 'Step 4: Compute Byte Offset', description: `Byte Offset = Total Element Index × W = ${totalElementOffset} × ${W} = ${byteOffset} bytes` },
+            { title: 'Step 5: Compute Final Address', description: `Final Address = Base + Byte Offset = ${B} + ${byteOffset} = ${finalAddress} (Decimal) = ${this.formatHex(finalAddress)} (Hex)` }
           ]
         };
       }
@@ -765,26 +729,11 @@
           finalAddressHex: this.formatHex(finalAddress),
           formulaRaw: 'Address(A[i][j]) = Base + [ (j - LBC) × R + (i - LBR) ] × W',
           steps: [
-            {
-              title: 'Step 1: Identify Parameters',
-              description: `Base = ${B} (${this.formatHex(B)}), Element Size W = ${W}B, Rows R = ${R}, Cols C = ${C}, Target = A[${i}][${j}]`
-            },
-            {
-              title: 'Step 2: Calculate Column Offset (Preceding Columns)',
-              description: `Preceding Cols = (j - LBC) = (${j} - ${LBC}) = ${colOffset} column(s). Preceding Elements = ${colOffset} × ${R} = ${elementsInPrecedingCols} elements`
-            },
-            {
-              title: 'Step 3: Add Row Offset (Preceding Elements in Target Column)',
-              description: `Preceding Rows = (i - LBR) = (${i} - ${LBR}) = ${rowOffset} element(s). Total Element Offset = ${elementsInPrecedingCols} + ${rowOffset} = ${totalElementOffset}`
-            },
-            {
-              title: 'Step 4: Compute Byte Offset',
-              description: `Byte Offset = Total Element Index × W = ${totalElementOffset} × ${W} = ${byteOffset} bytes`
-            },
-            {
-              title: 'Step 5: Compute Final Address',
-              description: `Final Address = Base + Byte Offset = ${B} + ${byteOffset} = ${finalAddress} (Decimal) = ${this.formatHex(finalAddress)} (Hex)`
-            }
+            { title: 'Step 1: Identify Parameters', description: `Base = ${B} (${this.formatHex(B)}), Element Size W = ${W}B, Rows R = ${R}, Cols C = ${C}, Target = A[${i}][${j}]` },
+            { title: 'Step 2: Calculate Column Offset (Preceding Columns)', description: `Preceding Cols = (j - LBC) = (${j} - ${LBC}) = ${colOffset} column(s). Preceding Elements = ${colOffset} × ${R} = ${elementsInPrecedingCols} elements` },
+            { title: 'Step 3: Add Row Offset (Preceding Elements in Target Column)', description: `Preceding Rows = (i - LBR) = (${i} - ${LBR}) = ${rowOffset} element(s). Total Element Offset = ${elementsInPrecedingCols} + ${rowOffset} = ${totalElementOffset}` },
+            { title: 'Step 4: Compute Byte Offset', description: `Byte Offset = Total Element Index × W = ${totalElementOffset} × ${W} = ${byteOffset} bytes` },
+            { title: 'Step 5: Compute Final Address', description: `Final Address = Base + Byte Offset = ${B} + ${byteOffset} = ${finalAddress} (Decimal) = ${this.formatHex(finalAddress)} (Hex)` }
           ]
         };
       }
@@ -1651,16 +1600,23 @@
         btn.addEventListener('click', () => applyViewMode(btn.dataset.mode));
       });
 
+      // Synchronize Operation Buttons (both Top Operation Toolbar and Stepper Tabs)
       const tabButtons = document.querySelectorAll('.op-tab-btn');
       tabButtons.forEach(btn => {
         btn.addEventListener('click', () => {
-          tabButtons.forEach(b => b.classList.remove('bg-cyan-500', 'text-slate-950', 'font-bold'));
-          tabButtons.forEach(b => b.classList.add('text-slate-300'));
+          tabButtons.forEach(b => {
+            b.classList.remove('bg-cyan-500', 'text-slate-950', 'font-bold', 'shadow-lg', 'shadow-cyan-500/30');
+            b.classList.add('text-slate-300');
+          });
 
-          btn.classList.remove('text-slate-300');
-          btn.classList.add('bg-cyan-500', 'text-slate-950', 'font-bold');
+          // Highlight all buttons matching clicked tab
+          const selectedTab = btn.dataset.tab;
+          document.querySelectorAll(`.op-tab-btn[data-tab="${selectedTab}"]`).forEach(activeBtn => {
+            activeBtn.classList.remove('text-slate-300');
+            activeBtn.classList.add('bg-cyan-500', 'text-slate-950', 'font-bold', 'shadow-lg', 'shadow-cyan-500/30');
+          });
 
-          state.activeTab = btn.dataset.tab;
+          state.activeTab = selectedTab;
           
           if (state.activeTab === 'linear' || state.activeTab === 'binary') {
             elOpValueWrapper.classList.remove('hidden');
