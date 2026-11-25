@@ -375,6 +375,9 @@
         <button data-tab="binary" class="op-tab-btn crystal-pill px-4 py-2.5 font-bold flex-1 flex items-center justify-center gap-2 text-slate-300 hover:text-white transition-all">
           <i class="fas fa-layer-group text-purple-400 text-sm"></i> Binary Search
         </button>
+        <button data-tab="sort" class="op-tab-btn crystal-pill px-4 py-2.5 font-bold flex-1 flex items-center justify-center gap-2 text-slate-300 hover:text-white transition-all">
+          <i class="fas fa-sort-amount-down text-pink-400 text-sm"></i> Sorting Algorithms
+        </button>
       </div>
     </section>
 
@@ -615,6 +618,192 @@
       </div>
 
     </div>
+
+    <!-- ===== SORTING ALGORITHMS PANEL ===== -->
+    <section id="sort-panel" class="hidden">
+      <div class="crystal-card p-5 shadow-2xl">
+        <div class="flex items-center justify-between mb-5 pb-3 border-b border-white/10">
+          <div>
+            <h2 class="text-sm font-bold font-mono text-pink-400 uppercase tracking-wider flex items-center gap-2">
+              <i class="fas fa-sort-amount-down text-pink-400"></i> SORTING ALGORITHMS VISUALIZER
+            </h2>
+            <p class="text-xs text-slate-400 mt-0.5">Click "Run Simulation" on any card to watch the algorithm animate step‑by‑step</p>
+          </div>
+          <span class="text-xs font-mono px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-300 font-bold">7 Algorithms</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+
+          <!-- Selection Sort -->
+          <div class="sort-card crystal-card p-4 !rounded-xl flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <h3 class="font-bold text-sm text-cyan-300 font-mono flex items-center gap-2"><i class="fas fa-hand-pointer text-cyan-400"></i> Selection Sort</h3>
+              <div class="flex gap-1 text-[10px] font-mono">
+                <span class="px-1.5 py-0.5 rounded bg-red-900/50 text-red-300 border border-red-700/40">O(N²)</span>
+                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-600/40">O(1)</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">Finds the minimum element from the unsorted portion and places it at the beginning. Repeats for each position.</p>
+            <div class="text-xs font-mono bg-slate-950 rounded-lg p-2.5 border border-white/10 text-slate-300 leading-relaxed">
+              <div class="text-pink-400 font-bold mb-1">// Algorithm</div>
+              for i = 0 to N‑1:<br>
+              &nbsp;&nbsp;minIdx = i<br>
+              &nbsp;&nbsp;for j = i+1 to N:<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;if A[j] &lt; A[minIdx]: minIdx = j<br>
+              &nbsp;&nbsp;swap(A[i], A[minIdx])
+            </div>
+            <div class="sort-bars h-20 flex items-end gap-0.5 bg-slate-950/60 rounded-lg p-2 border border-white/5"></div>
+            <button class="run-sort-btn crystal-btn w-full py-2 text-xs font-bold font-mono text-pink-300 hover:text-white hover:bg-pink-500/20 transition-all" data-algo="selection">
+              <i class="fas fa-play mr-1"></i> Run Simulation
+            </button>
+          </div>
+
+          <!-- Bubble Sort -->
+          <div class="sort-card crystal-card p-4 !rounded-xl flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <h3 class="font-bold text-sm text-cyan-300 font-mono flex items-center gap-2"><i class="fas fa-circle text-cyan-400 text-xs"></i> Bubble Sort</h3>
+              <div class="flex gap-1 text-[10px] font-mono">
+                <span class="px-1.5 py-0.5 rounded bg-red-900/50 text-red-300 border border-red-700/40">O(N²)</span>
+                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-600/40">O(1)</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">Repeatedly swaps adjacent elements if they are out of order. Largest element "bubbles" to the end each pass.</p>
+            <div class="text-xs font-mono bg-slate-950 rounded-lg p-2.5 border border-white/10 text-slate-300 leading-relaxed">
+              <div class="text-pink-400 font-bold mb-1">// Algorithm</div>
+              repeat:<br>
+              &nbsp;&nbsp;swapped = false<br>
+              &nbsp;&nbsp;for i = 1 to N:<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;if A[i‑1] > A[i]:<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swap; swapped = true<br>
+              until !swapped
+            </div>
+            <div class="sort-bars h-20 flex items-end gap-0.5 bg-slate-950/60 rounded-lg p-2 border border-white/5"></div>
+            <button class="run-sort-btn crystal-btn w-full py-2 text-xs font-bold font-mono text-pink-300 hover:text-white hover:bg-pink-500/20 transition-all" data-algo="bubble">
+              <i class="fas fa-play mr-1"></i> Run Simulation
+            </button>
+          </div>
+
+          <!-- Insertion Sort -->
+          <div class="sort-card crystal-card p-4 !rounded-xl flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <h3 class="font-bold text-sm text-cyan-300 font-mono flex items-center gap-2"><i class="fas fa-sign-in-alt text-cyan-400 text-xs"></i> Insertion Sort</h3>
+              <div class="flex gap-1 text-[10px] font-mono">
+                <span class="px-1.5 py-0.5 rounded bg-yellow-900/50 text-yellow-300 border border-yellow-700/40">O(N²)</span>
+                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-600/40">O(1)</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">Builds the sorted array one element at a time by inserting each new element into its correct position.</p>
+            <div class="text-xs font-mono bg-slate-950 rounded-lg p-2.5 border border-white/10 text-slate-300 leading-relaxed">
+              <div class="text-pink-400 font-bold mb-1">// Algorithm</div>
+              for i = 1 to N:<br>
+              &nbsp;&nbsp;key = A[i]; j = i‑1<br>
+              &nbsp;&nbsp;while j≥0 and A[j]>key:<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;A[j+1] = A[j]; j‑‑<br>
+              &nbsp;&nbsp;A[j+1] = key
+            </div>
+            <div class="sort-bars h-20 flex items-end gap-0.5 bg-slate-950/60 rounded-lg p-2 border border-white/5"></div>
+            <button class="run-sort-btn crystal-btn w-full py-2 text-xs font-bold font-mono text-pink-300 hover:text-white hover:bg-pink-500/20 transition-all" data-algo="insertion">
+              <i class="fas fa-play mr-1"></i> Run Simulation
+            </button>
+          </div>
+
+          <!-- Quick Sort -->
+          <div class="sort-card crystal-card p-4 !rounded-xl flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <h3 class="font-bold text-sm text-cyan-300 font-mono flex items-center gap-2"><i class="fas fa-bolt text-amber-400 text-xs"></i> Quick Sort</h3>
+              <div class="flex gap-1 text-[10px] font-mono">
+                <span class="px-1.5 py-0.5 rounded bg-green-900/50 text-green-300 border border-green-700/40">O(N log N)</span>
+                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-600/40">O(log N)</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">Divide‑and‑conquer: picks a pivot, partitions the array around it, then recursively sorts each partition.</p>
+            <div class="text-xs font-mono bg-slate-950 rounded-lg p-2.5 border border-white/10 text-slate-300 leading-relaxed">
+              <div class="text-pink-400 font-bold mb-1">// Algorithm</div>
+              quickSort(lo, hi):<br>
+              &nbsp;&nbsp;pivot = A[hi]<br>
+              &nbsp;&nbsp;partition around pivot<br>
+              &nbsp;&nbsp;quickSort(lo, p‑1)<br>
+              &nbsp;&nbsp;quickSort(p+1, hi)
+            </div>
+            <div class="sort-bars h-20 flex items-end gap-0.5 bg-slate-950/60 rounded-lg p-2 border border-white/5"></div>
+            <button class="run-sort-btn crystal-btn w-full py-2 text-xs font-bold font-mono text-pink-300 hover:text-white hover:bg-pink-500/20 transition-all" data-algo="quick">
+              <i class="fas fa-play mr-1"></i> Run Simulation
+            </button>
+          </div>
+
+          <!-- Merge Sort -->
+          <div class="sort-card crystal-card p-4 !rounded-xl flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <h3 class="font-bold text-sm text-cyan-300 font-mono flex items-center gap-2"><i class="fas fa-code-branch text-purple-400 text-xs"></i> Merge Sort</h3>
+              <div class="flex gap-1 text-[10px] font-mono">
+                <span class="px-1.5 py-0.5 rounded bg-green-900/50 text-green-300 border border-green-700/40">O(N log N)</span>
+                <span class="px-1.5 py-0.5 rounded bg-yellow-900/50 text-yellow-300 border border-yellow-700/40">O(N)</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">Recursively splits the array in half, sorts each half, then merges them back in sorted order. Stable sort.</p>
+            <div class="text-xs font-mono bg-slate-950 rounded-lg p-2.5 border border-white/10 text-slate-300 leading-relaxed">
+              <div class="text-pink-400 font-bold mb-1">// Algorithm</div>
+              mergeSort(arr):<br>
+              &nbsp;&nbsp;if len≤1: return<br>
+              &nbsp;&nbsp;mid = len/2<br>
+              &nbsp;&nbsp;L = mergeSort(left half)<br>
+              &nbsp;&nbsp;R = mergeSort(right half)<br>
+              &nbsp;&nbsp;merge(L, R)
+            </div>
+            <div class="sort-bars h-20 flex items-end gap-0.5 bg-slate-950/60 rounded-lg p-2 border border-white/5"></div>
+            <button class="run-sort-btn crystal-btn w-full py-2 text-xs font-bold font-mono text-pink-300 hover:text-white hover:bg-pink-500/20 transition-all" data-algo="merge">
+              <i class="fas fa-play mr-1"></i> Run Simulation
+            </button>
+          </div>
+
+          <!-- Shell Sort -->
+          <div class="sort-card crystal-card p-4 !rounded-xl flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <h3 class="font-bold text-sm text-cyan-300 font-mono flex items-center gap-2"><i class="fas fa-ruler text-emerald-400 text-xs"></i> Shell Sort</h3>
+              <div class="flex gap-1 text-[10px] font-mono">
+                <span class="px-1.5 py-0.5 rounded bg-blue-900/50 text-blue-300 border border-blue-700/40">O(N log N)</span>
+                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-600/40">O(1)</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">Generalised insertion sort that compares elements far apart first, reducing the gap each pass until gap = 1.</p>
+            <div class="text-xs font-mono bg-slate-950 rounded-lg p-2.5 border border-white/10 text-slate-300 leading-relaxed">
+              <div class="text-pink-400 font-bold mb-1">// Algorithm</div>
+              gap = N/2<br>
+              while gap > 0:<br>
+              &nbsp;&nbsp;insertion sort with gap<br>
+              &nbsp;&nbsp;gap = gap/2
+            </div>
+            <div class="sort-bars h-20 flex items-end gap-0.5 bg-slate-950/60 rounded-lg p-2 border border-white/5"></div>
+            <button class="run-sort-btn crystal-btn w-full py-2 text-xs font-bold font-mono text-pink-300 hover:text-white hover:bg-pink-500/20 transition-all" data-algo="shell">
+              <i class="fas fa-play mr-1"></i> Run Simulation
+            </button>
+          </div>
+
+          <!-- Radix Sort -->
+          <div class="sort-card crystal-card p-4 !rounded-xl flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <h3 class="font-bold text-sm text-cyan-300 font-mono flex items-center gap-2"><i class="fas fa-hashtag text-pink-400 text-xs"></i> Radix Sort</h3>
+              <div class="flex gap-1 text-[10px] font-mono">
+                <span class="px-1.5 py-0.5 rounded bg-green-900/50 text-green-300 border border-green-700/40">O(N·k)</span>
+                <span class="px-1.5 py-0.5 rounded bg-yellow-900/50 text-yellow-300 border border-yellow-700/40">O(N+k)</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">Non-comparative sort. Sorts digits from least‑significant to most‑significant using counting sort as a sub‑routine.</p>
+            <div class="text-xs font-mono bg-slate-950 rounded-lg p-2.5 border border-white/10 text-slate-300 leading-relaxed">
+              <div class="text-pink-400 font-bold mb-1">// Algorithm</div>
+              for each digit place:<br>
+              &nbsp;&nbsp;countingSort(arr, place)<br>
+              (LSD: 1s → 10s → 100s)
+            </div>
+            <div class="sort-bars h-20 flex items-end gap-0.5 bg-slate-950/60 rounded-lg p-2 border border-white/5"></div>
+            <button class="run-sort-btn crystal-btn w-full py-2 text-xs font-bold font-mono text-pink-300 hover:text-white hover:bg-pink-500/20 transition-all" data-algo="radix">
+              <i class="fas fa-play mr-1"></i> Run Simulation
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
 
   </main>
 
@@ -1809,6 +1998,234 @@
       applyTheme('crystal');
       applyViewMode('all');
       recalculateAll();
+    });
+  </script>
+  <!-- ===== SORTING ALGORITHMS JAVASCRIPT ===== -->
+  <script>
+    const SORT_SPEED = 180; // ms per animation frame
+
+    function sortDelay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+    function renderSortBars(container, arr, highlights = {}) {
+      container.innerHTML = '';
+      const max = Math.max(...arr, 1);
+      arr.forEach((val, i) => {
+        const bar = document.createElement('div');
+        bar.style.cssText = `
+          flex: 1;
+          height: ${Math.round((val / max) * 100)}%;
+          border-radius: 3px 3px 0 0;
+          transition: height 0.12s ease, background 0.12s ease;
+          min-width: 4px;
+          background: ${
+            highlights.swap && highlights.swap.includes(i) ? '#f43f5e' :
+            highlights.compare && highlights.compare.includes(i) ? '#f59e0b' :
+            highlights.sorted && highlights.sorted.includes(i) ? '#10b981' :
+            '#2563eb'
+          };
+          box-shadow: ${highlights.swap && highlights.swap.includes(i) ? '0 0 8px #f43f5e88' : 'none'};
+        `;
+        bar.title = val;
+        container.appendChild(bar);
+      });
+    }
+
+    // --- Selection Sort ---
+    async function runSelectionSort(arr, container) {
+      const sorted = [];
+      for (let i = 0; i < arr.length - 1; i++) {
+        let minIdx = i;
+        for (let j = i + 1; j < arr.length; j++) {
+          renderSortBars(container, arr, { compare: [minIdx, j], sorted });
+          await sortDelay(SORT_SPEED);
+          if (arr[j] < arr[minIdx]) minIdx = j;
+        }
+        [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
+        sorted.push(i);
+        renderSortBars(container, arr, { swap: [i, minIdx], sorted });
+        await sortDelay(SORT_SPEED);
+      }
+      renderSortBars(container, arr, { sorted: arr.map((_, i) => i) });
+    }
+
+    // --- Bubble Sort ---
+    async function runBubbleSort(arr, container) {
+      const sorted = [];
+      for (let i = 0; i < arr.length - 1; i++) {
+        let swapped = false;
+        for (let j = 0; j < arr.length - 1 - i; j++) {
+          renderSortBars(container, arr, { compare: [j, j + 1], sorted });
+          await sortDelay(SORT_SPEED);
+          if (arr[j] > arr[j + 1]) {
+            [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+            swapped = true;
+            renderSortBars(container, arr, { swap: [j, j + 1], sorted });
+            await sortDelay(SORT_SPEED);
+          }
+        }
+        sorted.unshift(arr.length - 1 - i);
+        if (!swapped) break;
+      }
+      renderSortBars(container, arr, { sorted: arr.map((_, i) => i) });
+    }
+
+    // --- Insertion Sort ---
+    async function runInsertionSort(arr, container) {
+      for (let i = 1; i < arr.length; i++) {
+        let key = arr[i], j = i - 1;
+        renderSortBars(container, arr, { compare: [i] });
+        await sortDelay(SORT_SPEED);
+        while (j >= 0 && arr[j] > key) {
+          arr[j + 1] = arr[j];
+          j--;
+          renderSortBars(container, arr, { swap: [j + 1, j + 2] });
+          await sortDelay(SORT_SPEED);
+        }
+        arr[j + 1] = key;
+        renderSortBars(container, arr, { compare: [j + 1] });
+        await sortDelay(SORT_SPEED);
+      }
+      renderSortBars(container, arr, { sorted: arr.map((_, i) => i) });
+    }
+
+    // --- Quick Sort ---
+    async function runQuickSort(arr, container, lo = 0, hi = arr.length - 1) {
+      if (lo < hi) {
+        const p = await qsPartition(arr, container, lo, hi);
+        await runQuickSort(arr, container, lo, p - 1);
+        await runQuickSort(arr, container, p + 1, hi);
+      }
+      if (lo === 0 && hi === arr.length - 1)
+        renderSortBars(container, arr, { sorted: arr.map((_, i) => i) });
+    }
+    async function qsPartition(arr, container, lo, hi) {
+      const pivot = arr[hi]; let i = lo;
+      for (let j = lo; j < hi; j++) {
+        renderSortBars(container, arr, { compare: [j, hi] });
+        await sortDelay(SORT_SPEED);
+        if (arr[j] < pivot) {
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+          renderSortBars(container, arr, { swap: [i, j] });
+          await sortDelay(SORT_SPEED);
+          i++;
+        }
+      }
+      [arr[i], arr[hi]] = [arr[hi], arr[i]];
+      renderSortBars(container, arr, { swap: [i, hi] });
+      await sortDelay(SORT_SPEED);
+      return i;
+    }
+
+    // --- Merge Sort ---
+    async function runMergeSort(arr, container) {
+      async function ms(start, end) {
+        if (end - start <= 1) return;
+        const mid = Math.floor((start + end) / 2);
+        await ms(start, mid);
+        await ms(mid, end);
+        const L = arr.slice(start, mid), R = arr.slice(mid, end);
+        let i = 0, j = 0, k = start;
+        while (i < L.length && j < R.length) {
+          renderSortBars(container, arr, { compare: [k] });
+          await sortDelay(SORT_SPEED);
+          arr[k++] = L[i] <= R[j] ? L[i++] : R[j++];
+        }
+        while (i < L.length) arr[k++] = L[i++];
+        while (j < R.length) arr[k++] = R[j++];
+        renderSortBars(container, arr);
+        await sortDelay(SORT_SPEED);
+      }
+      await ms(0, arr.length);
+      renderSortBars(container, arr, { sorted: arr.map((_, i) => i) });
+    }
+
+    // --- Shell Sort ---
+    async function runShellSort(arr, container) {
+      let gap = Math.floor(arr.length / 2);
+      while (gap > 0) {
+        for (let i = gap; i < arr.length; i++) {
+          let temp = arr[i], j = i;
+          while (j >= gap && arr[j - gap] > temp) {
+            renderSortBars(container, arr, { compare: [j, j - gap] });
+            await sortDelay(SORT_SPEED);
+            arr[j] = arr[j - gap];
+            j -= gap;
+          }
+          arr[j] = temp;
+          renderSortBars(container, arr, { swap: [j] });
+          await sortDelay(SORT_SPEED);
+        }
+        gap = Math.floor(gap / 2);
+      }
+      renderSortBars(container, arr, { sorted: arr.map((_, i) => i) });
+    }
+
+    // --- Radix Sort ---
+    async function runRadixSort(arr, container) {
+      const max = Math.max(...arr);
+      for (let exp = 1; Math.floor(max / exp) > 0; exp *= 10) {
+        const output = new Array(arr.length).fill(0);
+        const count = new Array(10).fill(0);
+        arr.forEach(v => count[Math.floor(v / exp) % 10]++);
+        for (let i = 1; i < 10; i++) count[i] += count[i - 1];
+        for (let i = arr.length - 1; i >= 0; i--)
+          output[--count[Math.floor(arr[i] / exp) % 10]] = arr[i];
+        output.forEach((v, i) => arr[i] = v);
+        renderSortBars(container, arr, { compare: [Math.floor(arr.length / 2)] });
+        await sortDelay(SORT_SPEED * 2);
+      }
+      renderSortBars(container, arr, { sorted: arr.map((_, i) => i) });
+    }
+
+    // --- Wire up tab visibility ---
+    document.addEventListener('DOMContentLoaded', () => {
+      const sortPanel = document.getElementById('sort-panel');
+      const mainContent = document.querySelector('main > .crystal-card.p-5.shadow-2xl + section, main > section#ram-layout-container')?.parentElement;
+
+      // Show/hide sort panel when "Sorting Algorithms" tab is clicked
+      document.querySelectorAll('.op-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (btn.dataset.tab === 'sort') {
+            sortPanel.classList.remove('hidden');
+            // Hide the main workspace grid
+            document.querySelector('main .grid.grid-cols-1.lg\\:grid-cols-12')?.classList.add('hidden');
+            document.getElementById('ram-layout-container')?.classList.add('hidden');
+            document.querySelector('section.crystal-card.p-5.shadow-xl')?.classList.add('hidden');
+          } else {
+            sortPanel.classList.add('hidden');
+            document.querySelector('main .grid.grid-cols-1.lg\\:grid-cols-12')?.classList.remove('hidden');
+            document.getElementById('ram-layout-container')?.classList.remove('hidden');
+            document.querySelector('section.crystal-card.p-5.shadow-xl')?.classList.remove('hidden');
+          }
+        });
+      });
+
+      // Run sort buttons
+      document.querySelectorAll('.run-sort-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const algo = btn.dataset.algo;
+          const card = btn.closest('.sort-card');
+          const barContainer = card.querySelector('.sort-bars');
+          const arr = Array.from({ length: 14 }, () => Math.floor(Math.random() * 88) + 12);
+
+          renderSortBars(barContainer, arr);
+          btn.disabled = true;
+          btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Running…';
+
+          switch (algo) {
+            case 'selection': await runSelectionSort(arr, barContainer); break;
+            case 'bubble':    await runBubbleSort(arr, barContainer); break;
+            case 'insertion': await runInsertionSort(arr, barContainer); break;
+            case 'quick':     await runQuickSort(arr, barContainer); break;
+            case 'merge':     await runMergeSort(arr, barContainer); break;
+            case 'shell':     await runShellSort(arr, barContainer); break;
+            case 'radix':     await runRadixSort(arr, barContainer); break;
+          }
+
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-redo mr-1"></i> Run Again';
+        });
+      });
     });
   </script>
 </body>
