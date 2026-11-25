@@ -80,23 +80,148 @@
     }
 
     [data-theme="light-frost"] {
-      --bg-primary: #f1f5f9;
-      --bg-card: rgba(255, 255, 255, 0.85);
+      --bg-primary: #eef2f7;
+      --bg-card: rgba(255, 255, 255, 0.82);
       --text-primary: #0f172a;
-      --text-secondary: #64748b;
-      --border-color: rgba(255, 255, 255, 0.8);
-      --border-bright: rgba(0, 122, 255, 0.6);
+      --text-secondary: #334155;
+      --border-color: rgba(15, 23, 42, 0.14);
+      --border-bright: rgba(2, 132, 199, 0.65);
 
-      --accent-cyan: #007aff;
-      --accent-blue: #5856d6;
-      --accent-purple: #af52de;
-      --accent-emerald: #34c759;
-      --accent-amber: #ff9500;
+      --accent-cyan: #0284c7;
+      --accent-blue: #4f46e5;
+      --accent-purple: #7c3aed;
+      --accent-emerald: #059669;
+      --accent-amber: #d97706;
 
-      --cell-bg: rgba(255, 255, 255, 0.7);
-      --cell-border: rgba(0, 0, 0, 0.08);
-      --glass-reflection: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.3) 100%);
-      --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      --cell-bg: rgba(255, 255, 255, 0.9);
+      --cell-border: rgba(15, 23, 42, 0.14);
+      --glass-reflection: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.05) 100%);
+      --glass-shadow: 0 14px 35px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    }
+
+    /* High-contrast readable typography & surfaces for Light Frost Glass theme */
+    [data-theme="light-frost"] header h1 {
+      background-image: linear-gradient(to right, #0369a1, #1d4ed8, #6d28d9) !important;
+    }
+
+    [data-theme="light-frost"] .text-slate-100,
+    [data-theme="light-frost"] .text-slate-200,
+    [data-theme="light-frost"] .text-slate-300 {
+      color: #0f172a !important;
+    }
+
+    [data-theme="light-frost"] .text-slate-400,
+    [data-theme="light-frost"] .text-slate-500,
+    [data-theme="light-frost"] .text-slate-600 {
+      color: #334155 !important;
+    }
+
+    [data-theme="light-frost"] .text-cyan-100,
+    [data-theme="light-frost"] .text-cyan-200,
+    [data-theme="light-frost"] .text-cyan-300,
+    [data-theme="light-frost"] .text-cyan-400,
+    [data-theme="light-frost"] .text-cyan-500,
+    [data-theme="light-frost"] .text-cyan-300\/90 {
+      color: #0369a1 !important;
+    }
+
+    [data-theme="light-frost"] .text-purple-100,
+    [data-theme="light-frost"] .text-purple-200,
+    [data-theme="light-frost"] .text-purple-300,
+    [data-theme="light-frost"] .text-purple-400 {
+      color: #6d28d9 !important;
+    }
+
+    [data-theme="light-frost"] .text-pink-300,
+    [data-theme="light-frost"] .text-pink-400 {
+      color: #be185d !important;
+    }
+
+    [data-theme="light-frost"] .text-emerald-100,
+    [data-theme="light-frost"] .text-emerald-200,
+    [data-theme="light-frost"] .text-emerald-300,
+    [data-theme="light-frost"] .text-emerald-400 {
+      color: #047857 !important;
+    }
+
+    [data-theme="light-frost"] .text-amber-100,
+    [data-theme="light-frost"] .text-amber-300,
+    [data-theme="light-frost"] .text-amber-400 {
+      color: #b45309 !important;
+    }
+
+    [data-theme="light-frost"] .text-rose-300,
+    [data-theme="light-frost"] .text-rose-400 {
+      color: #be123c !important;
+    }
+
+    [data-theme="light-frost"] .hover\:text-white:hover {
+      color: #0f172a !important;
+    }
+
+    [data-theme="light-frost"] .text-white:not(.bg-gradient-to-tr *):not(.bg-gradient-to-tr) {
+      color: #0f172a !important;
+    }
+
+    /* Active pill & primary CTA buttons stay crisp white text on saturated fill */
+    [data-theme="light-frost"] .bg-cyan-500,
+    [data-theme="light-frost"] .bg-pink-500 {
+      color: #ffffff !important;
+    }
+    [data-theme="light-frost"] .bg-cyan-500 {
+      background-color: #0284c7 !important;
+    }
+    [data-theme="light-frost"] .bg-pink-500 {
+      background-color: #db2777 !important;
+    }
+    [data-theme="light-frost"] .bg-cyan-500 *,
+    [data-theme="light-frost"] .bg-pink-500 * {
+      color: #ffffff !important;
+    }
+
+    /* Inputs, selects, code panels, and dividers in Light Frost */
+    [data-theme="light-frost"] input,
+    [data-theme="light-frost"] select,
+    [data-theme="light-frost"] option {
+      color: #0f172a !important;
+    }
+    [data-theme="light-frost"] option.bg-slate-900 {
+      background-color: #ffffff !important;
+      color: #0f172a !important;
+    }
+    [data-theme="light-frost"] .bg-slate-950,
+    [data-theme="light-frost"] .bg-slate-950\/60,
+    [data-theme="light-frost"] .bg-slate-950\/90,
+    [data-theme="light-frost"] .bg-slate-800\/80,
+    [data-theme="light-frost"] .bg-cyan-950 {
+      background-color: rgba(241, 245, 249, 0.92) !important;
+      border-color: rgba(15, 23, 42, 0.14) !important;
+      color: #0f172a !important;
+    }
+    [data-theme="light-frost"] .border-white\/10,
+    [data-theme="light-frost"] .border-white\/5 {
+      border-color: rgba(15, 23, 42, 0.12) !important;
+    }
+    [data-theme="light-frost"] .grid-cell {
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+    }
+
+    /* Frosted Silver Hardware DRAM stick in Light Frost */
+    [data-theme="light-frost"] .ram-stick-container {
+      background: linear-gradient(135deg, rgba(226, 232, 240, 0.92) 0%, rgba(241, 245, 249, 0.96) 100%) !important;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+    }
+    [data-theme="light-frost"] .ram-chip-block {
+      background: rgba(255, 255, 255, 0.92) !important;
+      border-color: rgba(15, 23, 42, 0.12) !important;
+    }
+    [data-theme="light-frost"] .ram-chip-block.bg-purple-950\/70 {
+      background: rgba(124, 58, 237, 0.14) !important;
+      border-color: #7c3aed !important;
+    }
+    [data-theme="light-frost"] .ram-chip-block.bg-emerald-950\/50 {
+      background: rgba(5, 150, 105, 0.14) !important;
+      border-color: #059669 !important;
     }
 
     body {
@@ -149,6 +274,7 @@
 
     .crystal-btn, .crystal-pill {
       position: relative;
+      isolation: isolate;
       background: var(--bg-card);
       backdrop-filter: blur(20px) saturate(190%);
       -webkit-backdrop-filter: blur(20px) saturate(190%);
@@ -163,6 +289,7 @@
     .crystal-btn::before, .crystal-pill::before {
       content: '';
       position: absolute;
+      z-index: -1;
       top: 0; left: 0; right: 0; bottom: 0;
       background: var(--glass-reflection);
       pointer-events: none;
