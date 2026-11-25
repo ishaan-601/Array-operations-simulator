@@ -1942,7 +1942,27 @@
           });
 
           state.activeTab = selectedTab;
-          
+
+          // Show / hide sorting panel vs main workspace
+          const sortPanel = document.getElementById('sort-panel');
+          const mainWorkspace = document.querySelector('main > .grid.grid-cols-1');
+          const ramSection = document.getElementById('ram-layout-container');
+          const paramSection = document.querySelector('main > section.crystal-card.p-5.shadow-2xl');
+          const customArraySection = document.querySelector('main > section.crystal-card.p-4.shadow-xl');
+
+          if (selectedTab === 'sort') {
+            // Show sort panel, hide main DSA workspace
+            if (sortPanel) sortPanel.classList.remove('hidden');
+            if (mainWorkspace) mainWorkspace.classList.add('hidden');
+            if (ramSection) ramSection.classList.add('hidden');
+            return; // don't run DSA operation
+          } else {
+            // Hide sort panel, show main DSA workspace
+            if (sortPanel) sortPanel.classList.add('hidden');
+            if (mainWorkspace) mainWorkspace.classList.remove('hidden');
+            if (ramSection) ramSection.classList.remove('hidden');
+          }
+
           if (state.activeTab === 'linear' || state.activeTab === 'binary') {
             elOpValueWrapper.classList.remove('hidden');
             document.getElementById('op-value-label').innerText = 'Search Target Value';
@@ -2177,30 +2197,8 @@
       renderSortBars(container, arr, { sorted: arr.map((_, i) => i) });
     }
 
-    // --- Wire up tab visibility ---
+    // --- Wire up run buttons only (tab switching handled by main handler) ---
     document.addEventListener('DOMContentLoaded', () => {
-      const sortPanel = document.getElementById('sort-panel');
-      const mainContent = document.querySelector('main > .crystal-card.p-5.shadow-2xl + section, main > section#ram-layout-container')?.parentElement;
-
-      // Show/hide sort panel when "Sorting Algorithms" tab is clicked
-      document.querySelectorAll('.op-tab-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          if (btn.dataset.tab === 'sort') {
-            sortPanel.classList.remove('hidden');
-            // Hide the main workspace grid
-            document.querySelector('main .grid.grid-cols-1.lg\\:grid-cols-12')?.classList.add('hidden');
-            document.getElementById('ram-layout-container')?.classList.add('hidden');
-            document.querySelector('section.crystal-card.p-5.shadow-xl')?.classList.add('hidden');
-          } else {
-            sortPanel.classList.add('hidden');
-            document.querySelector('main .grid.grid-cols-1.lg\\:grid-cols-12')?.classList.remove('hidden');
-            document.getElementById('ram-layout-container')?.classList.remove('hidden');
-            document.querySelector('section.crystal-card.p-5.shadow-xl')?.classList.remove('hidden');
-          }
-        });
-      });
-
-      // Run sort buttons
       document.querySelectorAll('.run-sort-btn').forEach(btn => {
         btn.addEventListener('click', async () => {
           const algo = btn.dataset.algo;
